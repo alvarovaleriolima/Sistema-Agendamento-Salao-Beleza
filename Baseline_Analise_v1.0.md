@@ -7,7 +7,7 @@ Sistema de Agendamento para Salão de Beleza
 1.0
 
 ## Data
-31/05/2026
+01/06/2026
 
 ## Objetivo
 
@@ -17,11 +17,11 @@ A partir desta versão, quaisquer modificações deverão gerar novas versões d
 
 ## Artefatos Incluídos
 
-| Código | Documento | Versão |
-|----------|----------|----------|
-| DRE | Documento de Requisitos | 1.0 |
-| EST | Estimativa de Tamanho | 1.0 |
-| CRO | Cronograma do Projeto | 1.0 |
+| Código | Documento | Versão | Localização / Link |
+|:---|:---|:---|:---|
+| **DRE** | Documento de Requisitos | 1.0 | [Docs/DocumentoRequisitos.docx](./Docs/DocumentoRequisitos.docx) |
+| **EST** | Estimativa de Tamanho | 1.0 | [Docs/Tabela%20de%20Estimativa%20de%20Projeto.xlsx](./Docs/Tabela%20de%20Estimativa%20de%20Projeto.xlsx) |
+| **CRO** | Cronograma do Projeto | 1.0 | [Docs/CronogramaSalão.pod](./Docs/CronogramaSalão.pod) |
 
 ## Responsáveis
 
@@ -39,4 +39,4 @@ Os membros da equipe aprovam os artefatos presentes nesta baseline para utiliza�
 
 | Versão | Data | Descrição |
 |---------|---------|---------|
-| 1.0 | 31/05/2026 | Primeira Baseline de Análise |
+| 1.0 | 01/06/2026 | Primeira Baseline de Análise |
