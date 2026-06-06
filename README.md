@@ -78,7 +78,7 @@ Sistema-Agendamento-Salao-Beleza \
 │       │   ├── enums \
 │       │   └── exceptions \
 │       └── src/main/resources \
-│           └── application.properties 
+│           └── application.properties \
 └── FrontEnd \
     ├── src \
     │   ├── app \
