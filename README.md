@@ -66,26 +66,26 @@ pnpm
 📁 Estrutura do Projeto
 Sistema-Agendamento-Salao-Beleza \
 ├── BackEnd \
-│   └── salon-api/
-│       ├── src/main/java/com/salao/salon_api/
-│       │   ├── controller/
-│       │   ├── services/
-│       │   ├── models/
-│       │   ├── repositories/
-│       │   ├── dto/
-│       │   │   ├── funcionario/
-│       │   │   └── cliente/
-│       │   ├── enums/
-│       │   └── exceptions/
-│       └── src/main/resources/
-│           └── application.properties
-└── FrontEnd/
-    ├── src/
-    │   ├── app/
-    │   ├── components/
-    │   ├── services/
-    │   └── styles/
-    └── package.json
+│   └── salon-api \
+│       ├── src/main/java/com/salao/salon_api \
+│       │   ├── controller \
+│       │   ├── services \
+│       │   ├── models \
+│       │   ├── repositories \
+│       │   ├── dto \
+│       │   │   ├── funcionario \
+│       │   │   └── cliente \
+│       │   ├── enums \
+│       │   └── exceptions \
+│       └── src/main/resources \
+│           └── application.properties \
+└── FrontEnd \
+    ├── src \
+    │   ├── app \
+    │   ├── components \
+    │   ├── services \
+    │   └── styles \
+    └── package.json \
 
 ⚙️ Pré-requisitos
 
