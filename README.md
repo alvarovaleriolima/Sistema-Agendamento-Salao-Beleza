@@ -140,3 +140,267 @@ PerfilPermissõesAdministradorAcesso total ao sistemaRecepcionistaGerencia clien
 
 👨‍💻 Autores
 Desenvolvido Samuel
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# 💇 SASB2026 — Sistema de Agendamento para Salão de Beleza
+
+Sistema web desenvolvido para gerenciamento de agendamentos, clientes, funcionários e serviços de um salão de beleza.
+
+Este projeto foi desenvolvido no contexto da disciplina de Engenharia de Software I, abrangendo atividades de levantamento de requisitos, análise, planejamento, gerenciamento de configuração e implementação do sistema.
+
+---
+
+## 👥 Equipe de Desenvolvimento
+
+- Alvaro
+- Clara
+- Pietro
+- Samuel
+- Wladia
+
+---
+
+## 📂 Estrutura do Repositório
+
+```text
+Sistema-Agendamento-Salao-Beleza
+├── Docs
+│   ├── DocumentoRequisitos.docx
+│   ├── Tabela_Estimativa_Projeto.xlsx
+│   ├── CronogramaSalao.pod
+│   └── Baseline_Analise_v1.0.md
+├── BackEnd
+│   └── salon-api
+└── FrontEnd
+```
+
+### Documentação
+
+A pasta `Docs/` contém os principais artefatos produzidos durante a fase de análise:
+
+- **Documento de Requisitos (DRE)**: especificação dos requisitos funcionais e não funcionais do sistema.
+- **Estimativa de Tamanho (EST)**: planilha utilizada para estimativa do esforço do projeto.
+- **Cronograma do Projeto (CRO)**: planejamento temporal desenvolvido no ProjectLibre.
+- **Baseline de Análise**: documento de aprovação e congelamento dos artefatos produzidos.
+
+---
+
+## 🚀 Baselines e Controle de Configuração
+
+O projeto utiliza Git e GitHub para controle de versão e gerenciamento de configuração.
+
+### Release 1.0 — Baseline de Análise
+
+Primeira versão oficial dos artefatos da fase de análise, contendo:
+
+- Documento de Requisitos (DRE)
+- Estimativa de Tamanho (EST)
+- Cronograma do Projeto (CRO)
+
+Todos os artefatos foram revisados e aprovados pela equipe antes da criação da baseline.
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+### Backend
+
+- Java 21
+- Spring Boot 3.2.5
+- Spring Data JPA
+- Spring Validation
+- H2 Database
+- Lombok
+- Swagger / SpringDoc OpenAPI
+
+### Frontend
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui
+- pnpm
+
+### Ferramentas de Engenharia de Software
+
+- Microsoft Word
+- Microsoft Excel
+- ProjectLibre
+- Markdown
+- Git
+- GitHub
+
+---
+
+## 📁 Estrutura do Projeto
+
+```text
+Sistema-Agendamento-Salao-Beleza
+├── BackEnd
+│   └── salon-api
+│       ├── src/main/java/com/salao/salon_api
+│       │   ├── controller
+│       │   ├── services
+│       │   ├── models
+│       │   ├── repositories
+│       │   ├── dto
+│       │   │   ├── funcionario
+│       │   │   └── cliente
+│       │   ├── enums
+│       │   └── exceptions
+│       └── src/main/resources
+│           └── application.properties
+└── FrontEnd
+    ├── src
+    │   ├── app
+    │   ├── components
+    │   ├── services
+    │   └── styles
+    └── package.json
+```
+
+---
+
+## ⚙️ Pré-requisitos
+
+Antes de executar o projeto, instale:
+
+- Java 21 ou superior
+- Node.js (versão LTS)
+- pnpm
+
+Instalação do pnpm:
+
+```bash
+npm install -g pnpm
+```
+
+---
+
+## 🚀 Como Executar o Projeto
+
+### 1. Clonar o Repositório
+
+```bash
+git clone https://github.com/seu-usuario/Sistema-Agendamento-Salao-Beleza.git
+
+cd Sistema-Agendamento-Salao-Beleza
+```
+
+### 2. Executar o Backend
+
+```bash
+cd BackEnd/salon-api
+```
+
+Linux/Mac:
+
+```bash
+./mvnw spring-boot:run
+```
+
+Windows:
+
+```bash
+mvnw.cmd spring-boot:run
+```
+
+O backend será iniciado em:
+
+```text
+http://localhost:8080
+```
+
+### 3. Executar o Frontend
+
+Em outro terminal:
+
+```bash
+cd FrontEnd
+
+pnpm install
+
+pnpm approve-builds
+
+pnpm install
+
+pnpm dev
+```
+
+O frontend será iniciado em:
+
+```text
+http://localhost:5173
+```
+
+---
+
+## 📖 Documentação da API
+
+Com o backend em execução:
+
+### Swagger UI
+
+```text
+http://localhost:8080/swagger-ui.html
+```
+
+### Console H2
+
+```text
+http://localhost:8080/h2-console
+```
+
+Configurações:
+
+```text
+JDBC URL: jdbc:h2:mem:sasb_db
+Usuário: sa
+Senha: (em branco)
+```
+
+---
+
+## 📋 Funcionalidades Implementadas
+
+| Código | Funcionalidade | Prioridade |
+|---------|---------------|------------|
+| RFS01 | Inserir Funcionário | Essencial |
+| RFS02 | Consultar Funcionário | Essencial |
+| RFS03 | Editar Funcionário | Essencial |
+| RFS04 | Inativar Funcionário | Essencial |
+| RFS05 | Inserir Cliente | Essencial |
+| RFS06 | Consultar Cliente | Essencial |
+| RFS07 | Editar Cliente | Essencial |
+| RFS08 | Inativar Cliente | Essencial |
+
+---
+
+## 👥 Perfis de Usuário
+
+| Perfil | Permissões |
+|----------|------------|
+| Administrador | Acesso total ao sistema |
+| Recepcionista | Gerenciamento de clientes e agendamentos |
+| Profissional | Visualização da própria agenda |
+| Cliente | Realização e consulta de agendamentos |
+
+---
+
+## 👨‍💻 Autores
+
+Desenvolvido por:
+
+- Samuel
+- Alvaro
+- Clara
+- Pietro
+- Wladia
+
+---
+
+## 📄 Licença
+
+Projeto desenvolvido exclusivamente para fins acadêmicos na disciplina de Engenharia de Software I.
