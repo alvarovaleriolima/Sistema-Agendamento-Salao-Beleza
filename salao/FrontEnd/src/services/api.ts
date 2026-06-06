@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://localhost:8080/api';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -107,45 +107,45 @@ function json(method: string, body: unknown): RequestInit {
 
 export const funcionariosApi = {
   listarTodos: (): Promise<FuncionarioResponse[]> =>
-    fetch(`${BASE_URL}/funcionarios`).then(handleResponse),
+    fetch(`${BASE_URL}/funcionarios`).then(r => handleResponse<FuncionarioResponse[]>(r)),
 
   buscarPorNome: (nome: string): Promise<FuncionarioResponse[]> =>
-    fetch(`${BASE_URL}/funcionarios?nome=${encodeURIComponent(nome)}`).then(handleResponse),
+    fetch(`${BASE_URL}/funcionarios/nome?nome=${encodeURIComponent(nome)}`).then(r => handleResponse<FuncionarioResponse[]>(r)),
 
   buscarPorLogin: (login: string): Promise<FuncionarioResponse> =>
-    fetch(`${BASE_URL}/funcionarios/${encodeURIComponent(login)}`).then(handleResponse),
+    fetch(`${BASE_URL}/funcionarios/login/${encodeURIComponent(login)}`).then(r => handleResponse<FuncionarioResponse>(r)),
 
   buscarPorPerfil: (perfil: PerfilFuncionario): Promise<FuncionarioResponse[]> =>
-    fetch(`${BASE_URL}/funcionarios?perfil=${perfil}`).then(handleResponse),
+    fetch(`${BASE_URL}/funcionarios/perfil?perfil=${perfil}`).then(r => handleResponse<FuncionarioResponse[]>(r)),
 
   criar: (data: FuncionarioRequest): Promise<FuncionarioResponse> =>
-    fetch(`${BASE_URL}/funcionarios`, json('POST', data)).then(handleResponse),
+    fetch(`${BASE_URL}/funcionarios`, json('POST', data)).then(r => handleResponse<FuncionarioResponse>(r)),
 
   editar: (login: string, data: FuncionarioUpdateRequest): Promise<FuncionarioResponse> =>
-    fetch(`${BASE_URL}/funcionarios/${encodeURIComponent(login)}`, json('PUT', data)).then(handleResponse),
+    fetch(`${BASE_URL}/funcionarios/${encodeURIComponent(login)}`, json('PUT', data)).then(r => handleResponse<FuncionarioResponse>(r)),
 
   inativar: (login: string): Promise<void> =>
-    fetch(`${BASE_URL}/funcionarios/${encodeURIComponent(login)}/inativar`, { method: 'PATCH' }).then(handleResponse),
+    fetch(`${BASE_URL}/funcionarios/${encodeURIComponent(login)}/inativar`, { method: 'PATCH' }).then(r => handleResponse<void>(r)),
 };
 
 // ── Clientes API ─────────────────────────────────────────────────────────────
 
 export const clientesApi = {
   listarTodos: (): Promise<ClienteResponse[]> =>
-    fetch(`${BASE_URL}/clientes`).then(handleResponse),
+    fetch(`${BASE_URL}/clientes`).then(r => handleResponse<ClienteResponse[]>(r)),
 
   buscarPorNome: (nome: string): Promise<ClienteResponse[]> =>
-    fetch(`${BASE_URL}/clientes?nome=${encodeURIComponent(nome)}`).then(handleResponse),
+    fetch(`${BASE_URL}/clientes/nome?nome=${encodeURIComponent(nome)}`).then(r => handleResponse<ClienteResponse[]>(r)),
 
   buscarPorLogin: (login: string): Promise<ClienteResponse> =>
-    fetch(`${BASE_URL}/clientes/${encodeURIComponent(login)}`).then(handleResponse),
+    fetch(`${BASE_URL}/clientes/login/${encodeURIComponent(login)}`).then(r => handleResponse<ClienteResponse>(r)),
 
   criar: (data: ClienteRequest): Promise<ClienteResponse> =>
-    fetch(`${BASE_URL}/clientes`, json('POST', data)).then(handleResponse),
+    fetch(`${BASE_URL}/clientes`, json('POST', data)).then(r => handleResponse<ClienteResponse>(r)),
 
   editar: (login: string, data: ClienteUpdateRequest): Promise<ClienteResponse> =>
-    fetch(`${BASE_URL}/clientes/${encodeURIComponent(login)}`, json('PUT', data)).then(handleResponse),
+    fetch(`${BASE_URL}/clientes/${encodeURIComponent(login)}`, json('PUT', data)).then(r => handleResponse<ClienteResponse>(r)),
 
   inativar: (login: string): Promise<void> =>
-    fetch(`${BASE_URL}/clientes/${encodeURIComponent(login)}/inativar`, { method: 'PATCH' }).then(handleResponse),
+    fetch(`${BASE_URL}/clientes/${encodeURIComponent(login)}/inativar`, { method: 'PATCH' }).then(r => handleResponse<void>(r)),
 };
