@@ -96,6 +96,17 @@ public class ClienteService {
         repository.save(c);
         // TODO: cancelar agendamentos futuros, liberar horário e executar RFS19
     }
+    // -----------------------------------------------------------------------
+    // Listar todos os clientes (endpoint adicional para facilitar testes)
+    // -----------------------------------------------------------------------
+
+    @Transactional(readOnly = true)
+    public List<DetalheResponse> listarTodos() {
+        return repository.findAll()
+            .stream()
+            .map(DetalheResponse::from)
+            .toList();
+    }
 
     // -----------------------------------------------------------------------
     // Helpers internos

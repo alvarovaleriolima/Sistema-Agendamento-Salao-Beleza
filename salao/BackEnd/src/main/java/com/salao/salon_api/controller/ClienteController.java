@@ -69,4 +69,9 @@ public class ClienteController {
         service.inativar(login);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping
+    @Operation(summary = "Listar todos os clientes")
+    public ResponseEntity<List<DetalheResponse>> listarTodos() {
+        return ResponseEntity.ok(service.listarTodos());
+    }
 }

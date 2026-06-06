@@ -1,5 +1,6 @@
 package com.salao.salon_api.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.salao.salon_api.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,6 +23,7 @@ public class Cliente {
     @Column(name = "nome_completo", nullable = false, length = 150)
     private String nomeCompleto;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
 

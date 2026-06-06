@@ -1,13 +1,10 @@
 package com.salao.salon_api.dto.funcionario;
 
 import com.salao.salon_api.enums.PerfilFuncionario;
-import com.salao.salon_api.enums.Status;
-import com.salao.salon_api.models.Funcionario;
 import jakarta.validation.constraints.*;
 
 public record InserirRequest(
         @NotBlank(message = "Nome completo é obrigatório.")
-        @Size(max = 150, message = "Nome completo deve ter no máximo 150 caracteres.")
         String nomeCompleto,
 
         @NotBlank(message = "Login é obrigatório.")
@@ -30,9 +27,6 @@ public record InserirRequest(
         @Email(message = "E-mail inválido.")
         String email,
 
-        /** Obrigatório apenas quando perfil = PROFISSIONAL (validado no Service) */
         String especialidade,
-
-        /** Obrigatório apenas quando perfil = PROFISSIONAL (validado no Service) */
         String horarioTrabalho
 ) {}

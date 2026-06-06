@@ -76,6 +76,13 @@ public class FuncionarioService {
                 .map(ResumoPerfilResponse::from)
                 .toList();
     }
+    @Transactional(readOnly = true)
+    public List<DetalheResponse> listarTodos() {
+        return repository.findAll()
+            .stream()
+            .map(DetalheResponse::from)
+            .toList();
+    }
 
     // -----------------------------------------------------------------------
     // RFS03 – Editar Funcionário

@@ -4,9 +4,6 @@ import com.salao.salon_api.enums.PerfilFuncionario;
 import com.salao.salon_api.enums.Status;
 import com.salao.salon_api.models.Funcionario;
 
-/**
- * RFS02 – Busca por login: retorna todos os dados exceto senha.
- */
 public record DetalheResponse(
         Long id,
         String nomeCompleto,

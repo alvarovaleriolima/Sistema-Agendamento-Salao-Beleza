@@ -1,12 +1,13 @@
 package com.salao.salon_api.dto.cliente;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
-/** RFS05 – Inserir Cliente */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record InserirRequest(
         @NotBlank(message = "Nome completo é obrigatório.")
-        @Size(max = 150, message = "Nome completo deve ter no máximo 150 caracteres.")
         String nomeCompleto,
 
         @NotNull(message = "Data de nascimento é obrigatória.")
@@ -14,7 +15,7 @@ public record InserirRequest(
         LocalDate dataNascimento,
 
         @NotBlank(message = "Login é obrigatório.")
-        @Size(min = 3, max = 50, message = "Login deve ter entre 3 e 50 caracteres.")
+        @Size(min = 3, max = 50)
         String login,
 
         @NotBlank(message = "Senha é obrigatória.")
@@ -26,7 +27,6 @@ public record InserirRequest(
                 message = "Telefone deve estar no formato (00) 00000-0000.")
         String telefone,
 
-        @NotBlank(message = "E-mail é obrigatório.")
         @Email(message = "E-mail inválido.")
         String email
 ) {}
