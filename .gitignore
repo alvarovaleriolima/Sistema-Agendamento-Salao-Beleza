@@ -1,0 +1,58 @@
+# Maven / Java
+target/
+**/target/
+
+# Maven Wrapper
+.mvn/wrapper/maven-wrapper.jar
+
+# IDEs
+.idea/
+.vscode/
+.classpath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+.factorypath
+.apt_generated
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+**/build/
+
+# Node.js
+node_modules/
+**/node_modules/
+
+# Frontend builds
+dist/
+**/dist/
+
+# Logs
+*.log
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Postman
+.postman/
+postman/
+
+# Arquivos de ambiente
+.env
+.env.*
+
+# Arquivos temporários
+tmp/
+temp/
