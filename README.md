@@ -78,14 +78,14 @@ Sistema-Agendamento-Salao-Beleza \
 │       │   ├── enums \
 │       │   └── exceptions \
 │       └── src/main/resources \
-│           └── application.properties \
+│           └── application.properties 
 └── FrontEnd \
     ├── src \
     │   ├── app \
     │   ├── components \
     │   ├── services \
     │   └── styles \
-    └── package.json \
+    └── package.json 
 
 ⚙️ Pré-requisitos
 
