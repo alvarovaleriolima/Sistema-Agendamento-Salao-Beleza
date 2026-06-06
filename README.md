@@ -64,8 +64,8 @@ pnpm
 
 
 📁 Estrutura do Projeto
-Sistema-Agendamento-Salao-Beleza/
-├── BackEnd/
+Sistema-Agendamento-Salao-Beleza \
+├── BackEnd \
 │   └── salon-api/
 │       ├── src/main/java/com/salao/salon_api/
 │       │   ├── controller/
