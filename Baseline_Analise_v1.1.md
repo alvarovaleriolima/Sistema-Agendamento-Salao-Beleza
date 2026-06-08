@@ -1,17 +1,17 @@
-# BASELINE DE ANÁLISE 1.0
+# BASELINE DE ANÁLISE 1.1
 
 ## Projeto
 Sistema de Agendamento para Salão de Beleza
 
 ## Versão
-1.0
+1.1
 
 ## Data
-01/06/2026
+06/06/2026
 
 ## Objetivo
 
-Esta Baseline estabelece a primeira versão oficial dos artefatos produzidos na fase de análise do projeto Sistema de Agendamento para Salão de Beleza.
+Esta Baseline estabelece a segunda versão oficial dos artefatos produzidos na fase de análise do projeto Sistema de Agendamento para Salão de Beleza.
 
 A partir desta versão, quaisquer modificações deverão gerar novas versões dos documentos e ser registradas no controle de configuração do projeto.
 
@@ -19,9 +19,9 @@ A partir desta versão, quaisquer modificações deverão gerar novas versões d
 
 | Código | Documento | Versão | Localização / Link |
 |:---|:---|:---|:---|
-| **DRE** | Documento de Requisitos | 1.0 | [Docs/DocumentoRequisitos.docx](./Docs/DocumentoRequisitos.docx) |
-| **EST** | Estimativa de Tamanho | 1.0 | [Docs/Tabela%20de%20Estimativa%20de%20Projeto.xlsx](./Docs/Tabela%20de%20Estimativa%20de%20Projeto.xlsx) |
-| **CRO** | Cronograma do Projeto | 1.0 | [Docs/CronogramaSalão.pod](./Docs/CronogramaSalão.pod) |
+| **DRE** | Documento de Requisitos | 1.1 | [Docs/DocumentoRequisitos.docx](./Docs/DocumentoRequisitos.docx) |
+| **EST** | Estimativa de Tamanho | 1.1 | [Docs/Tabela%20de%20Estimativa%20de%20Projeto.xlsx](./Docs/Tabela%20de%20Estimativa%20de%20Projeto.xlsx) |
+| **CRO** | Cronograma do Projeto | 1.1 | [Docs/CronogramaSalão.pod](./Docs/CronogramaSalão.pod) |
 
 ## Responsáveis
 
