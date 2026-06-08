@@ -1,6 +1,5 @@
 package com.salao.salon_api.dto.cliente;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;

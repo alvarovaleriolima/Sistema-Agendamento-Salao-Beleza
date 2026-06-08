@@ -1,22 +1,1299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Salão · Gestão</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Sistema de Agendamento</title>
-      <meta name="description" content="Manage beauty salon appointments efficiently with client and staff records to streamline scheduling and improve service organization." />
-      <meta name="robots" content="noindex, nofollow" />
-      <style>html, body { height: 100%; margin: 0; } #root { height: 100%; }</style>
-      
-    </head>
+    :root {
+      --ink: #1a1714;
+      --ink-soft: #3d3830;
+      --ink-muted: #8a8178;
+      --cream: #f5f0e8;
+      --cream-dark: #ede7da;
+      --cream-darker: #e0d9cc;
+      --gold: #b8924a;
+      --gold-light: #d4aa6a;
+      --red: #c0392b;
+      --green: #2d6a4f;
+      --white: #faf8f4;
+      --shadow: 0 1px 3px rgba(26,23,20,0.08), 0 4px 16px rgba(26,23,20,0.06);
+      --shadow-lg: 0 8px 32px rgba(26,23,20,0.12);
+      --radius: 4px;
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
 
-    <body>
-      
-      <div id="root"></div>
-      <script type="module" src="/src/main.tsx"></script>
-      
-    </body>
-  </html>
-  
+    html, body, #root { height: 100%; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Layout */
+    .app { display: flex; height: 100vh; overflow: hidden; }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      min-width: 220px;
+      background: var(--ink);
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .sidebar-logo {
+      padding: 28px 24px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .sidebar-logo-icon {
+      width: 36px; height: 36px;
+      background: var(--gold);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .sidebar-logo h1 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--cream);
+      letter-spacing: 0.02em;
+      line-height: 1;
+    }
+
+    .sidebar-logo span {
+      font-size: 10px;
+      font-weight: 300;
+      color: var(--ink-muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .sidebar-section {
+      padding: 20px 16px 8px;
+    }
+
+    .sidebar-section-label {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      padding: 0 8px;
+      margin-bottom: 6px;
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      color: rgba(245,240,232,0.55);
+      font-size: 13.5px;
+      font-weight: 400;
+      transition: all 0.15s;
+      position: relative;
+    }
+
+    .sidebar-item:hover { color: var(--cream); background: rgba(255,255,255,0.05); }
+
+    .sidebar-item.active {
+      color: var(--cream);
+      background: rgba(184,146,74,0.18);
+    }
+
+    .sidebar-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 6px; bottom: 6px;
+      width: 2px;
+      background: var(--gold);
+      border-radius: 0 2px 2px 0;
+    }
+
+    .sidebar-dot {
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      margin-left: auto;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* Main */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    /* Header */
+    .header {
+      background: var(--white);
+      border-bottom: 1px solid var(--cream-darker);
+      padding: 20px 36px;
+    }
+
+    .header-top { display: flex; align-items: flex-start; justify-content: space-between; }
+
+    .header h2 {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 400;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+      line-height: 1;
+    }
+
+    .header p {
+      color: var(--ink-muted);
+      font-size: 13px;
+      margin-top: 4px;
+      font-weight: 300;
+    }
+
+    .btn-primary {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 18px;
+      background: var(--ink);
+      color: var(--cream);
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover { background: var(--ink-soft); }
+
+    /* Search bar */
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      align-items: center;
+    }
+
+    .search-tabs {
+      display: flex;
+      border: 1px solid var(--cream-darker);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--white);
+    }
+
+    .search-tab {
+      padding: 7px 14px;
+      font-size: 12.5px;
+      cursor: pointer;
+      color: var(--ink-muted);
+      background: transparent;
+      border: none;
+      font-family: var(--font-body);
+      transition: all 0.15s;
+    }
+
+    .search-tab.active {
+      background: var(--ink);
+      color: var(--cream);
+    }
+
+    .search-input-wrap {
+      flex: 1;
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--ink-muted);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 8px 12px 8px 36px;
+      border: 1px solid var(--cream-darker);
+      border-radius: var(--radius);
+      background: var(--white);
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .search-input:focus { border-color: var(--gold); }
+    .search-input::placeholder { color: var(--ink-muted); }
+
+    .btn-search {
+      padding: 8px 18px;
+      background: var(--ink);
+      color: var(--cream);
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--font-body);
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-search:hover { background: var(--ink-soft); }
+
+    .btn-icon {
+      padding: 8px;
+      background: var(--white);
+      border: 1px solid var(--cream-darker);
+      border-radius: var(--radius);
+      cursor: pointer;
+      color: var(--ink-muted);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .btn-icon:hover { color: var(--ink); border-color: var(--ink-muted); }
+
+    /* Content */
+    .content { flex: 1; overflow-y: auto; padding: 28px 36px; }
+
+    /* Spinner */
+    .spinner-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 0;
+    }
+
+    .spinner {
+      width: 32px; height: 32px;
+      border: 2px solid var(--cream-darker);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Empty */
+    .empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 0;
+      color: var(--ink-muted);
+      text-align: center;
+    }
+
+    .empty-icon {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: var(--cream-dark);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+      font-size: 20px;
+    }
+
+    .empty p { font-size: 14px; color: var(--ink); }
+    .empty small { font-size: 12px; margin-top: 4px; }
+
+    /* Table */
+    .table-wrap {
+      background: var(--white);
+      border: 1px solid var(--cream-darker);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    thead tr { background: var(--cream-dark); }
+
+    th {
+      text-align: left;
+      padding: 11px 16px;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+
+    tbody tr {
+      border-top: 1px solid var(--cream-dark);
+      transition: background 0.1s;
+    }
+
+    tbody tr:hover { background: var(--cream); }
+
+    td { padding: 12px 16px; font-size: 13.5px; }
+
+    .cell-name { font-weight: 500; color: var(--ink); }
+    .cell-sub { font-size: 11.5px; color: var(--ink-muted); margin-top: 1px; }
+    .cell-mono { font-family: 'Courier New', monospace; font-size: 12.5px; color: var(--ink-soft); }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 400;
+      border: 1px solid;
+    }
+
+    .badge-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+    }
+
+    .badge-ativo { background: #f0faf5; color: var(--green); border-color: #a8d5bc; }
+    .badge-ativo .badge-dot { background: var(--green); }
+    .badge-inativo { background: #f5f2ef; color: var(--ink-muted); border-color: var(--cream-darker); }
+    .badge-inativo .badge-dot { background: var(--ink-muted); }
+
+    .badge-perfil {
+      background: rgba(184,146,74,0.1);
+      color: var(--gold);
+      border-color: rgba(184,146,74,0.3);
+      font-size: 10.5px;
+      letter-spacing: 0.05em;
+    }
+
+    .actions { display: flex; gap: 4px; }
+
+    .action-btn {
+      padding: 5px;
+      border: none;
+      background: transparent;
+      border-radius: 3px;
+      cursor: pointer;
+      color: var(--ink-muted);
+      transition: all 0.12s;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .action-btn:hover { color: var(--ink); background: var(--cream-dark); }
+    .action-btn.danger:hover { color: var(--red); background: #fdf0ef; }
+
+    .table-footer {
+      padding: 10px 16px;
+      border-top: 1px solid var(--cream-dark);
+      font-size: 11.5px;
+      color: var(--ink-muted);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(26,23,20,0.55);
+      backdrop-filter: blur(2px);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 100;
+      padding: 20px;
+      animation: fadeIn 0.15s ease;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .modal {
+      background: var(--white);
+      border-radius: 8px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      animation: slideUp 0.2s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(12px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      padding: 22px 24px 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--ink-muted);
+      padding: 4px;
+      border-radius: 3px;
+      transition: color 0.12s;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .modal-close:hover { color: var(--ink); }
+
+    .modal-body { padding: 20px 24px 24px; }
+
+    /* Form */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-full { grid-column: 1 / -1; }
+
+    .field { display: flex; flex-direction: column; gap: 5px; }
+
+    label {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    label span.req { color: var(--gold); }
+
+    input, select {
+      padding: 9px 12px;
+      border: 1px solid var(--cream-darker);
+      border-radius: var(--radius);
+      background: var(--cream);
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.15s, background 0.15s;
+      width: 100%;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--gold);
+      background: var(--white);
+    }
+
+    input.error, select.error { border-color: var(--red); }
+    .field-error { font-size: 11px; color: var(--red); }
+
+    input:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: var(--cream-dark);
+    }
+
+    .form-divider {
+      grid-column: 1 / -1;
+      border: none;
+      border-top: 1px solid var(--cream-darker);
+      margin: 4px 0;
+    }
+
+    .form-section-label {
+      grid-column: 1 / -1;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+
+    /* Modal actions */
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      padding-top: 6px;
+      margin-top: 6px;
+      border-top: 1px solid var(--cream-darker);
+    }
+
+    .btn-cancel {
+      padding: 9px 18px;
+      background: transparent;
+      border: 1px solid var(--cream-darker);
+      border-radius: var(--radius);
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-cancel:hover { background: var(--cream-dark); }
+
+    /* Confirm dialog */
+    .confirm-icon {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: #fdf0ef;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .confirm-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+
+    .confirm-msg {
+      font-size: 13.5px;
+      color: var(--ink-soft);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .btn-danger {
+      padding: 9px 18px;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--font-body);
+      font-size: 13px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .btn-danger:hover { opacity: 0.88; }
+
+    /* Toast */
+    .toasts {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      display: flex; flex-direction: column; gap: 8px;
+      z-index: 200;
+    }
+
+    .toast {
+      padding: 11px 16px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      box-shadow: var(--shadow-lg);
+      animation: toastIn 0.2s ease;
+      display: flex; align-items: center; gap: 8px;
+      max-width: 320px;
+    }
+
+    @keyframes toastIn {
+      from { transform: translateX(20px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .toast-success { background: var(--ink); color: var(--cream); }
+    .toast-error { background: var(--red); color: #fff; }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useCallback, useRef } = React;
+
+const BASE = 'http://localhost:8080/api';
+
+// ── API ──────────────────────────────────────────────────────────────────────
+
+async function req(method, path, body) {
+  const opts = { method, headers: { 'Content-Type': 'application/json' } };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(BASE + path, opts);
+  if (res.status === 204) return null;
+  const data = await res.json();
+  if (!res.ok) {
+    const msg = data.mensagem || data.message || data.erro || 'Erro desconhecido';
+    const erros = data.erros ? Object.values(data.erros).join(' | ') : null;
+    throw new Error(erros || msg);
+  }
+  return data;
+}
+
+const api = {
+  funcionarios: {
+    listar: () => req('GET', '/funcionarios'),
+    buscarNome: (n) => req('GET', `/funcionarios/nome?nome=${encodeURIComponent(n)}`),
+    buscarLogin: (l) => req('GET', `/funcionarios/login/${encodeURIComponent(l)}`),
+    buscarPerfil: (p) => req('GET', `/funcionarios/perfil?perfil=${p}`),
+    criar: (d) => req('POST', '/funcionarios', d),
+    editar: (login, d) => req('PUT', `/funcionarios/${encodeURIComponent(login)}`, d),
+    inativar: (login) => req('PATCH', `/funcionarios/${encodeURIComponent(login)}/inativar`),
+  },
+  clientes: {
+    listar: () => req('GET', '/clientes'),
+    buscarNome: (n) => req('GET', `/clientes/nome?nome=${encodeURIComponent(n)}`),
+    buscarLogin: (l) => req('GET', `/clientes/login/${encodeURIComponent(l)}`),
+    criar: (d) => req('POST', '/clientes', d),
+    editar: (login, d) => req('PUT', `/clientes/${encodeURIComponent(login)}`, d),
+    inativar: (login) => req('PATCH', `/clientes/${encodeURIComponent(login)}/inativar`),
+  },
+};
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function phoneMask(v) {
+  const d = v.replace(/\D/g, '').slice(0, 11);
+  if (d.length <= 2) return d.length ? `(${d}` : '';
+  if (d.length <= 7) return `(${d.slice(0,2)}) ${d.slice(2)}`;
+  return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
+}
+
+function dateMask(v) {
+  const d = v.replace(/\D/g, '').slice(0, 8);
+  if (d.length <= 2) return d;
+  if (d.length <= 4) return `${d.slice(0,2)}/${d.slice(2)}`;
+  return `${d.slice(0,2)}/${d.slice(2,4)}/${d.slice(4)}`;
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+
+function useToast() {
+  const [toasts, setToasts] = useState([]);
+  const add = useCallback((msg, type = 'success') => {
+    const id = Date.now();
+    setToasts(t => [...t, { id, msg, type }]);
+    setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), 3500);
+  }, []);
+  return { toasts, toast: add };
+}
+
+function Toasts({ toasts }) {
+  return (
+    <div className="toasts">
+      {toasts.map(t => (
+        <div key={t.id} className={`toast toast-${t.type}`}>
+          {t.type === 'success' ? '✓' : '✕'} {t.msg}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── Icons ─────────────────────────────────────────────────────────────────────
+
+const Icon = ({ name, size = 15 }) => {
+  const icons = {
+    users: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+    user: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+    plus: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+    search: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>,
+    edit: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>,
+    ban: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>,
+    refresh: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>,
+    x: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+    alert: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
+  };
+  return icons[name] || null;
+};
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+
+function Modal({ open, onClose, title, children }) {
+  if (!open) return null;
+  return (
+    <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+      <div className="modal">
+        <div className="modal-header">
+          <div className="modal-title">{title}</div>
+          <button className="modal-close" onClick={onClose}><Icon name="x" size={16} /></button>
+        </div>
+        <div className="modal-body">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+// ── Confirm Dialog ────────────────────────────────────────────────────────────
+
+function ConfirmDialog({ open, title, message, onConfirm, onCancel, loading }) {
+  if (!open) return null;
+  return (
+    <div className="modal-overlay">
+      <div className="modal" style={{ maxWidth: 400 }}>
+        <div className="modal-body">
+          <div className="confirm-icon"><Icon name="alert" size={20} style={{ color: 'var(--red)' }} /></div>
+          <div className="confirm-title">{title}</div>
+          <div className="confirm-msg">{message}</div>
+          <div className="modal-actions">
+            <button className="btn-cancel" onClick={onCancel} disabled={loading}>Cancelar</button>
+            <button className="btn-danger" onClick={onConfirm} disabled={loading}>
+              {loading ? 'Aguarde...' : 'Confirmar'}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Badge ─────────────────────────────────────────────────────────────────────
+
+function StatusBadge({ status }) {
+  const ativo = status === 'ATIVO';
+  return (
+    <span className={`badge ${ativo ? 'badge-ativo' : 'badge-inativo'}`}>
+      <span className="badge-dot" />
+      {ativo ? 'Ativo' : 'Inativo'}
+    </span>
+  );
+}
+
+// ── Funcionario Form ──────────────────────────────────────────────────────────
+
+function FuncionarioForm({ item, onSubmit, onCancel, loading }) {
+  const isEdit = !!item;
+  const [f, setF] = useState({
+    nomeCompleto: item?.nomeCompleto || '',
+    login: item?.login || '',
+    senha: '',
+    perfil: item?.perfil || '',
+    telefone: item?.telefone || '',
+    email: item?.email || '',
+    especialidade: item?.especialidade || '',
+    horarioTrabalho: item?.horarioTrabalho || '',
+  });
+  const [erros, setErros] = useState({});
+
+  const set = (k, v) => { setF(p => ({ ...p, [k]: v })); setErros(p => ({ ...p, [k]: '' })); };
+
+  const validate = () => {
+    const e = {};
+    if (!f.nomeCompleto.trim()) e.nomeCompleto = 'Obrigatório';
+    if (!isEdit && !f.login.trim()) e.login = 'Obrigatório';
+    if (!isEdit && f.login.length < 3) e.login = 'Mínimo 3 caracteres';
+    if (!isEdit && f.senha.length < 8) e.senha = 'Mínimo 8 caracteres';
+    if (!f.perfil) e.perfil = 'Obrigatório';
+    if (!f.telefone.match(/^\(\d{2}\) \d{4,5}-\d{4}$/)) e.telefone = 'Formato inválido';
+    if (!f.email.includes('@')) e.email = 'E-mail inválido';
+    if (f.perfil === 'PROFISSIONAL' && !f.especialidade) e.especialidade = 'Obrigatório para profissional';
+    if (f.perfil === 'PROFISSIONAL' && !f.horarioTrabalho) e.horarioTrabalho = 'Obrigatório para profissional';
+    setErros(e);
+    return Object.keys(e).length === 0;
+  };
+
+  const submit = () => {
+    if (!validate()) return;
+    const payload = isEdit
+      ? { nomeCompleto: f.nomeCompleto, perfil: f.perfil, telefone: f.telefone, email: f.email, especialidade: f.especialidade, horarioTrabalho: f.horarioTrabalho, ...(f.senha ? { senha: f.senha } : {}) }
+      : { ...f };
+    onSubmit(payload);
+  };
+
+  return (
+    <div className="form-grid">
+      <div className="field form-full">
+        <label>Nome Completo <span className="req">*</span></label>
+        <input value={f.nomeCompleto} onChange={e => set('nomeCompleto', e.target.value)} className={erros.nomeCompleto ? 'error' : ''} placeholder="Nome completo" />
+        {erros.nomeCompleto && <span className="field-error">{erros.nomeCompleto}</span>}
+      </div>
+
+      <div className="field">
+        <label>Login <span className="req">*</span></label>
+        <input value={f.login} onChange={e => set('login', e.target.value)} disabled={isEdit} className={erros.login ? 'error' : ''} placeholder="login.usuario" />
+        {erros.login && <span className="field-error">{erros.login}</span>}
+        {isEdit && <span className="field-error" style={{ color: 'var(--ink-muted)' }}>Não pode ser alterado</span>}
+      </div>
+
+      <div className="field">
+        <label>{isEdit ? 'Nova Senha' : 'Senha'} {!isEdit && <span className="req">*</span>}</label>
+        <input type="password" value={f.senha} onChange={e => set('senha', e.target.value)} className={erros.senha ? 'error' : ''} placeholder={isEdit ? 'Deixe em branco para manter' : 'Mínimo 8 caracteres'} />
+        {erros.senha && <span className="field-error">{erros.senha}</span>}
+      </div>
+
+      <div className="field">
+        <label>Perfil <span className="req">*</span></label>
+        <select value={f.perfil} onChange={e => set('perfil', e.target.value)} className={erros.perfil ? 'error' : ''}>
+          <option value="">Selecione...</option>
+          <option value="ADMINISTRADOR">Administrador</option>
+          <option value="RECEPCIONISTA">Recepcionista</option>
+          <option value="PROFISSIONAL">Profissional</option>
+        </select>
+        {erros.perfil && <span className="field-error">{erros.perfil}</span>}
+      </div>
+
+      <div className="field">
+        <label>Telefone <span className="req">*</span></label>
+        <input value={f.telefone} onChange={e => set('telefone', phoneMask(e.target.value))} className={erros.telefone ? 'error' : ''} placeholder="(00) 00000-0000" />
+        {erros.telefone && <span className="field-error">{erros.telefone}</span>}
+      </div>
+
+      <div className="field">
+        <label>E-mail <span className="req">*</span></label>
+        <input type="email" value={f.email} onChange={e => set('email', e.target.value)} className={erros.email ? 'error' : ''} placeholder="email@exemplo.com" />
+        {erros.email && <span className="field-error">{erros.email}</span>}
+      </div>
+
+      {f.perfil === 'PROFISSIONAL' && (
+        <>
+          <div className="field">
+            <label>Especialidade <span className="req">*</span></label>
+            <select value={f.especialidade} onChange={e => set('especialidade', e.target.value)} className={erros.especialidade ? 'error' : ''}>
+              <option value="">Selecione...</option>
+              {['CABELO','MANICURE','PEDICURE','ESTETICA','MAQUIAGEM','DEPILACAO','SOBRANCELHA','MASSAGEM'].map(e => (
+                <option key={e} value={e}>{e.charAt(0) + e.slice(1).toLowerCase()}</option>
+              ))}
+            </select>
+            {erros.especialidade && <span className="field-error">{erros.especialidade}</span>}
+          </div>
+
+          <div className="field">
+            <label>Horário <span className="req">*</span></label>
+            <input value={f.horarioTrabalho} onChange={e => set('horarioTrabalho', e.target.value)} className={erros.horarioTrabalho ? 'error' : ''} placeholder="08:00 às 18:00" />
+            {erros.horarioTrabalho && <span className="field-error">{erros.horarioTrabalho}</span>}
+          </div>
+        </>
+      )}
+
+      <div className="modal-actions form-full">
+        <button className="btn-cancel" onClick={onCancel} disabled={loading}>Cancelar</button>
+        <button className="btn-primary" onClick={submit} disabled={loading}>
+          {loading ? 'Salvando...' : isEdit ? 'Salvar Alterações' : 'Cadastrar'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ── Cliente Form ──────────────────────────────────────────────────────────────
+
+function ClienteForm({ item, onSubmit, onCancel, loading }) {
+  const isEdit = !!item;
+  const [f, setF] = useState({
+    nomeCompleto: item?.nomeCompleto || '',
+    dataNascimento: item?.dataNascimento || '',
+    login: item?.login || '',
+    senha: '',
+    telefone: item?.telefone || '',
+    email: item?.email || '',
+  });
+  const [erros, setErros] = useState({});
+
+  const set = (k, v) => { setF(p => ({ ...p, [k]: v })); setErros(p => ({ ...p, [k]: '' })); };
+
+  const validate = () => {
+    const e = {};
+    if (!f.nomeCompleto.trim()) e.nomeCompleto = 'Obrigatório';
+    if (!f.dataNascimento.match(/^\d{2}\/\d{2}\/\d{4}$/)) e.dataNascimento = 'Formato: DD/MM/AAAA';
+    if (!isEdit && f.login.length < 3) e.login = 'Mínimo 3 caracteres';
+    if (!isEdit && f.senha.length < 8) e.senha = 'Mínimo 8 caracteres';
+    if (!f.telefone.match(/^\(\d{2}\) \d{4,5}-\d{4}$/)) e.telefone = 'Formato inválido';
+    if (f.email && !f.email.includes('@')) e.email = 'E-mail inválido';
+    setErros(e);
+    return Object.keys(e).length === 0;
+  };
+
+  const submit = () => {
+    if (!validate()) return;
+    const payload = isEdit
+      ? { nomeCompleto: f.nomeCompleto, dataNascimento: f.dataNascimento, telefone: f.telefone, email: f.email, ...(f.senha ? { senha: f.senha } : {}) }
+      : { nomeCompleto: f.nomeCompleto, dataNascimento: f.dataNascimento, login: f.login, senha: f.senha, telefone: f.telefone, email: f.email };
+    onSubmit(payload);
+  };
+
+  return (
+    <div className="form-grid">
+      <div className="field form-full">
+        <label>Nome Completo <span className="req">*</span></label>
+        <input value={f.nomeCompleto} onChange={e => set('nomeCompleto', e.target.value)} className={erros.nomeCompleto ? 'error' : ''} placeholder="Nome completo" />
+        {erros.nomeCompleto && <span className="field-error">{erros.nomeCompleto}</span>}
+      </div>
+
+      <div className="field">
+        <label>Data de Nascimento <span className="req">*</span></label>
+        <input value={f.dataNascimento} onChange={e => set('dataNascimento', dateMask(e.target.value))} className={erros.dataNascimento ? 'error' : ''} placeholder="DD/MM/AAAA" />
+        {erros.dataNascimento && <span className="field-error">{erros.dataNascimento}</span>}
+      </div>
+
+      <div className="field">
+        <label>Telefone <span className="req">*</span></label>
+        <input value={f.telefone} onChange={e => set('telefone', phoneMask(e.target.value))} className={erros.telefone ? 'error' : ''} placeholder="(00) 00000-0000" />
+        {erros.telefone && <span className="field-error">{erros.telefone}</span>}
+      </div>
+
+      <div className="field">
+        <label>Login <span className="req">*</span></label>
+        <input value={f.login} onChange={e => set('login', e.target.value)} disabled={isEdit} className={erros.login ? 'error' : ''} placeholder="login.usuario" />
+        {erros.login && <span className="field-error">{erros.login}</span>}
+        {isEdit && <span style={{ fontSize: 11, color: 'var(--ink-muted)' }}>Não pode ser alterado</span>}
+      </div>
+
+      <div className="field">
+        <label>{isEdit ? 'Nova Senha' : 'Senha'} {!isEdit && <span className="req">*</span>}</label>
+        <input type="password" value={f.senha} onChange={e => set('senha', e.target.value)} className={erros.senha ? 'error' : ''} placeholder={isEdit ? 'Deixe em branco para manter' : 'Mínimo 8 caracteres'} />
+        {erros.senha && <span className="field-error">{erros.senha}</span>}
+      </div>
+
+      <div className="field form-full">
+        <label>E-mail</label>
+        <input type="email" value={f.email} onChange={e => set('email', e.target.value)} className={erros.email ? 'error' : ''} placeholder="email@exemplo.com" />
+        {erros.email && <span className="field-error">{erros.email}</span>}
+      </div>
+
+      <div className="modal-actions form-full">
+        <button className="btn-cancel" onClick={onCancel} disabled={loading}>Cancelar</button>
+        <button className="btn-primary" onClick={submit} disabled={loading}>
+          {loading ? 'Salvando...' : isEdit ? 'Salvar Alterações' : 'Cadastrar'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ── Funcionarios Page ─────────────────────────────────────────────────────────
+
+function FuncionariosPage({ toast }) {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
+  const [search, setSearch] = useState('');
+  const [searchType, setSearchType] = useState('nome');
+  const [modal, setModal] = useState(false);
+  const [editItem, setEditItem] = useState(null);
+  const [confirmItem, setConfirmItem] = useState(null);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await api.funcionarios.listar();
+      setItems(Array.isArray(data) ? data : []);
+    } catch (e) { toast(e.message, 'error'); }
+    finally { setLoading(false); }
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  const handleSearch = async () => {
+    if (!search.trim()) { load(); return; }
+    setLoading(true);
+    try {
+      let result;
+      if (searchType === 'nome') result = await api.funcionarios.buscarNome(search.trim());
+      else if (searchType === 'login') { const r = await api.funcionarios.buscarLogin(search.trim()); result = [r]; }
+      else result = await api.funcionarios.buscarPerfil(search.trim().toUpperCase());
+      setItems(Array.isArray(result) ? result : [result]);
+    } catch (e) { toast(e.message, 'error'); setItems([]); }
+    finally { setLoading(false); }
+  };
+
+  const handleSubmit = async (data) => {
+    setFormLoading(true);
+    try {
+      if (editItem) { await api.funcionarios.editar(editItem.login, data); toast('Funcionário atualizado!'); }
+      else { await api.funcionarios.criar(data); toast('Funcionário cadastrado!'); }
+      setModal(false); setEditItem(null); load();
+    } catch (e) { toast(e.message, 'error'); }
+    finally { setFormLoading(false); }
+  };
+
+  const handleInativar = async () => {
+    if (!confirmItem) return;
+    setConfirmLoading(true);
+    try {
+      await api.funcionarios.inativar(confirmItem.login);
+      toast(`${confirmItem.nomeCompleto} inativado.`);
+      setConfirmItem(null); load();
+    } catch (e) { toast(e.message, 'error'); }
+    finally { setConfirmLoading(false); }
+  };
+
+  const perfilLabel = { ADMINISTRADOR: 'Admin', RECEPCIONISTA: 'Recepção', PROFISSIONAL: 'Profissional' };
+
+  return (
+    <>
+      <div className="header">
+        <div className="header-top">
+          <div>
+            <h2>Funcionários</h2>
+            <p>Gerencie o cadastro de funcionários do salão</p>
+          </div>
+          <button className="btn-primary" onClick={() => { setEditItem(null); setModal(true); }}>
+            <Icon name="plus" /> Novo Funcionário
+          </button>
+        </div>
+        <div className="search-bar">
+          <div className="search-tabs">
+            {[['nome','Nome'],['login','Login'],['perfil','Perfil']].map(([v,l]) => (
+              <button key={v} className={`search-tab ${searchType === v ? 'active' : ''}`} onClick={() => { setSearchType(v); setSearch(''); }}>{l}</button>
+            ))}
+          </div>
+          <div className="search-input-wrap">
+            <span className="search-icon"><Icon name="search" size={13} /></span>
+            <input className="search-input" value={search} onChange={e => setSearch(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleSearch()} placeholder={`Buscar por ${searchType}...`} />
+          </div>
+          <button className="btn-search" onClick={handleSearch}>Buscar</button>
+          <button className="btn-icon" onClick={load} title="Recarregar"><Icon name="refresh" size={14} /></button>
+        </div>
+      </div>
+
+      <div className="content">
+        {loading ? (
+          <div className="spinner-wrap"><div className="spinner" /></div>
+        ) : items.length === 0 ? (
+          <div className="empty">
+            <div className="empty-icon">👤</div>
+            <p>Nenhum funcionário encontrado</p>
+            <small>Cadastre um novo funcionário ou ajuste a busca</small>
+          </div>
+        ) : (
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  {['Nome','Login','Perfil','Telefone','Status','Ações'].map(h => <th key={h}>{h}</th>)}
+                </tr>
+              </thead>
+              <tbody>
+                {items.map(item => (
+                  <tr key={item.id || item.login}>
+                    <td>
+                      <div className="cell-name">{item.nomeCompleto}</div>
+                      {item.email && <div className="cell-sub">{item.email}</div>}
+                    </td>
+                    <td><span className="cell-mono">{item.login}</span></td>
+                    <td><span className="badge badge-perfil">{perfilLabel[item.perfil] || item.perfil}</span></td>
+                    <td style={{ color: 'var(--ink-soft)' }}>{item.telefone}</td>
+                    <td><StatusBadge status={item.status} /></td>
+                    <td>
+                      <div className="actions">
+                        <button className="action-btn" onClick={() => { setEditItem(item); setModal(true); }} title="Editar"><Icon name="edit" size={13} /></button>
+                        {item.status === 'ATIVO' && (
+                          <button className="action-btn danger" onClick={() => setConfirmItem(item)} title="Inativar"><Icon name="ban" size={13} /></button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="table-footer">{items.length} {items.length === 1 ? 'funcionário' : 'funcionários'}</div>
+          </div>
+        )}
+      </div>
+
+      <Modal open={modal} onClose={() => { setModal(false); setEditItem(null); }} title={editItem ? `Editar: ${editItem.nomeCompleto}` : 'Novo Funcionário'}>
+        <FuncionarioForm item={editItem} onSubmit={handleSubmit} onCancel={() => { setModal(false); setEditItem(null); }} loading={formLoading} />
+      </Modal>
+
+      <ConfirmDialog open={!!confirmItem} title="Inativar Funcionário"
+        message={`Tem certeza que deseja inativar "${confirmItem?.nomeCompleto}"? Agendamentos futuros serão cancelados.`}
+        onConfirm={handleInativar} onCancel={() => setConfirmItem(null)} loading={confirmLoading} />
+    </>
+  );
+}
+
+// ── Clientes Page ─────────────────────────────────────────────────────────────
+
+function ClientesPage({ toast }) {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
+  const [search, setSearch] = useState('');
+  const [searchType, setSearchType] = useState('nome');
+  const [modal, setModal] = useState(false);
+  const [editItem, setEditItem] = useState(null);
+  const [confirmItem, setConfirmItem] = useState(null);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await api.clientes.listar();
+      setItems(Array.isArray(data) ? data : []);
+    } catch (e) { toast(e.message, 'error'); }
+    finally { setLoading(false); }
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  const handleSearch = async () => {
+    if (!search.trim()) { load(); return; }
+    setLoading(true);
+    try {
+      let result;
+      if (searchType === 'nome') result = await api.clientes.buscarNome(search.trim());
+      else { const r = await api.clientes.buscarLogin(search.trim()); result = [r]; }
+      setItems(Array.isArray(result) ? result : [result]);
+    } catch (e) { toast(e.message, 'error'); setItems([]); }
+    finally { setLoading(false); }
+  };
+
+  const handleSubmit = async (data) => {
+    setFormLoading(true);
+    try {
+      if (editItem) { await api.clientes.editar(editItem.login, data); toast('Cliente atualizado!'); }
+      else { await api.clientes.criar(data); toast('Cliente cadastrado!'); }
+      setModal(false); setEditItem(null); load();
+    } catch (e) { toast(e.message, 'error'); }
+    finally { setFormLoading(false); }
+  };
+
+  const handleInativar = async () => {
+    if (!confirmItem) return;
+    setConfirmLoading(true);
+    try {
+      await api.clientes.inativar(confirmItem.login);
+      toast(`${confirmItem.nomeCompleto} inativado.`);
+      setConfirmItem(null); load();
+    } catch (e) { toast(e.message, 'error'); }
+    finally { setConfirmLoading(false); }
+  };
+
+  return (
+    <>
+      <div className="header">
+        <div className="header-top">
+          <div>
+            <h2>Clientes</h2>
+            <p>Gerencie o cadastro de clientes do salão</p>
+          </div>
+          <button className="btn-primary" onClick={() => { setEditItem(null); setModal(true); }}>
+            <Icon name="plus" /> Novo Cliente
+          </button>
+        </div>
+        <div className="search-bar">
+          <div className="search-tabs">
+            {[['nome','Nome'],['login','Login']].map(([v,l]) => (
+              <button key={v} className={`search-tab ${searchType === v ? 'active' : ''}`} onClick={() => { setSearchType(v); setSearch(''); }}>{l}</button>
+            ))}
+          </div>
+          <div className="search-input-wrap">
+            <span className="search-icon"><Icon name="search" size={13} /></span>
+            <input className="search-input" value={search} onChange={e => setSearch(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleSearch()} placeholder={`Buscar por ${searchType}...`} />
+          </div>
+          <button className="btn-search" onClick={handleSearch}>Buscar</button>
+          <button className="btn-icon" onClick={load} title="Recarregar"><Icon name="refresh" size={14} /></button>
+        </div>
+      </div>
+
+      <div className="content">
+        {loading ? (
+          <div className="spinner-wrap"><div className="spinner" /></div>
+        ) : items.length === 0 ? (
+          <div className="empty">
+            <div className="empty-icon">👤</div>
+            <p>Nenhum cliente encontrado</p>
+            <small>Cadastre um novo cliente ou ajuste a busca</small>
+          </div>
+        ) : (
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  {['Nome','Login','Nascimento','Telefone','Status','Ações'].map(h => <th key={h}>{h}</th>)}
+                </tr>
+              </thead>
+              <tbody>
+                {items.map(item => (
+                  <tr key={item.id || item.login}>
+                    <td>
+                      <div className="cell-name">{item.nomeCompleto}</div>
+                      {item.email && <div className="cell-sub">{item.email}</div>}
+                    </td>
+                    <td><span className="cell-mono">{item.login}</span></td>
+                    <td style={{ color: 'var(--ink-soft)' }}>{item.dataNascimento}</td>
+                    <td style={{ color: 'var(--ink-soft)' }}>{item.telefone}</td>
+                    <td><StatusBadge status={item.status} /></td>
+                    <td>
+                      <div className="actions">
+                        <button className="action-btn" onClick={() => { setEditItem(item); setModal(true); }} title="Editar"><Icon name="edit" size={13} /></button>
+                        {item.status === 'ATIVO' && (
+                          <button className="action-btn danger" onClick={() => setConfirmItem(item)} title="Inativar"><Icon name="ban" size={13} /></button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="table-footer">{items.length} {items.length === 1 ? 'cliente' : 'clientes'}</div>
+          </div>
+        )}
+      </div>
+
+      <Modal open={modal} onClose={() => { setModal(false); setEditItem(null); }} title={editItem ? `Editar: ${editItem.nomeCompleto}` : 'Novo Cliente'}>
+        <ClienteForm item={editItem} onSubmit={handleSubmit} onCancel={() => { setModal(false); setEditItem(null); }} loading={formLoading} />
+      </Modal>
+
+      <ConfirmDialog open={!!confirmItem} title="Inativar Cliente"
+        message={`Tem certeza que deseja inativar "${confirmItem?.nomeCompleto}"? Agendamentos futuros serão cancelados.`}
+        onConfirm={handleInativar} onCancel={() => setConfirmItem(null)} loading={confirmLoading} />
+    </>
+  );
+}
+
+// ── App ───────────────────────────────────────────────────────────────────────
+
+function App() {
+  const [page, setPage] = useState('funcionarios');
+  const { toasts, toast } = useToast();
+
+  return (
+    <div className="app">
+      <aside className="sidebar">
+        <div className="sidebar-logo">
+          <div className="sidebar-logo-icon">✂</div>
+          <h1>Salão</h1>
+          <span>Gestão</span>
+        </div>
+        <div className="sidebar-section">
+          <div className="sidebar-section-label">Cadastros</div>
+          <div className={`sidebar-item ${page === 'funcionarios' ? 'active' : ''}`} onClick={() => setPage('funcionarios')}>
+            <Icon name="users" size={14} />
+            Funcionários
+            {page === 'funcionarios' && <span className="sidebar-dot" />}
+          </div>
+          <div className={`sidebar-item ${page === 'clientes' ? 'active' : ''}`} onClick={() => setPage('clientes')}>
+            <Icon name="user" size={14} />
+            Clientes
+            {page === 'clientes' && <span className="sidebar-dot" />}
+          </div>
+        </div>
+      </aside>
+
+      <main className="main">
+        {page === 'funcionarios' ? <FuncionariosPage toast={toast} /> : <ClientesPage toast={toast} />}
+      </main>
+
+      <Toasts toasts={toasts} />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
