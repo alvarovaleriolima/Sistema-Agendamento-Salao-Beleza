@@ -39,4 +39,4 @@ Os membros da equipe aprovam os artefatos presentes nesta baseline para utiliza�
 
 | Versão | Data | Descrição |
 |---------|---------|---------|
-| 1.0 | 01/06/2026 | Primeira Baseline de Análise |
+| 1.1 | 06/06/2026 | Segunda Baseline de Análise |
