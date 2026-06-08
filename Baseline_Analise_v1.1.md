@@ -21,7 +21,7 @@ A partir desta versão, quaisquer modificações deverão gerar novas versões d
 |:---|:---|:---|:---|
 | **DRE** | Documento de Requisitos | 1.1 | [Docs/DocumentoRequisitos.docx](./Docs/DocumentoRequisitos.docx) |
 | **EST** | Estimativa de Tamanho | 1.1 | [Docs/Tabela%20de%20Estimativa%20de%20Projeto.xlsx](./Docs/Tabela%20de%20Estimativa%20de%20Projeto.xlsx) |
-| **CRO** | Cronograma do Projeto | 1.1 | [Docs/CronogramaSalão.pod](./Docs/CronogramaSalão.pod) |
+| **CRO** | Cronograma do Projeto | 1.1 | [Docs/CRO_SalaodeBeleza1.1.pod](./Docs/CRO_SalaodeBeleza1.1.pod) |
 
 ## Responsáveis
 
