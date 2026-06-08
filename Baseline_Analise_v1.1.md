@@ -20,7 +20,7 @@ A partir desta versão, quaisquer modificações deverão gerar novas versões d
 | Código | Documento | Versão | Localização / Link |
 |:---|:---|:---|:---|
 | **DRE** | Documento de Requisitos | 1.1 | [Docs/DRE-Sal%C3%A3odeBeleza%201.1.docx](./Docs/DRE-Sal%C3%A3odeBeleza%201.1.docx) |
-| **EST** | Estimativa de Tamanho | 1.1 | [Docs/Tabela%20de%20Estimativa%20de%20Projeto.xlsx](./Docs/Tabela%20de%20Estimativa%20de%20Projeto.xlsx) |
+| **EST** | Estimativa de Tamanho | 1.1 | [Docs/Sal%C3%A3o-TabelaEstimativa1.1.xlsx](./Docs/Sal%C3%A3o-TabelaEstimativa1.1.xlsx) |
 | **CRO** | Cronograma do Projeto | 1.1 | [Docs/CRO_SalaodeBeleza1.1.pod](./Docs/CRO_SalaodeBeleza1.1.pod) |
 
 ## Responsáveis
