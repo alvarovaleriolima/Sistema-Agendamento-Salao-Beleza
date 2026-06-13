@@ -13,15 +13,17 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**")
+                // Alterado para /** para garantir que todas as rotas fiquem liberadas
+                registry.addMapping("/**")
                         .allowedOrigins(
-                            "http://localhost:5173",
-                            "http://localhost:5174",
-                            "http://localhost:3000"
+                                "http://localhost:5173",
+                                "http://localhost:5174",
+                                "http://localhost:3000",
+                                "http://127.0.0.1:5500", // <-- A porta do seu Live Server
+                                "http://localhost:5500" // <-- Garantia extra para o localhost
                         )
                         .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
-             
                         .allowCredentials(true);
             }
         };

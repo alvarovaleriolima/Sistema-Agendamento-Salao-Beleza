@@ -1,8 +1,5 @@
 package com.salao.salon_api.dto.funcionario;
 
-import java.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.salao.salon_api.enums.PerfilFuncionario;
 import jakarta.validation.constraints.*;
 
@@ -15,12 +12,9 @@ public record EditarRequest(
         @Size(max = 150)
         String nomeCompleto,
         
-        @NotNull(message = "Data de nascimento é obrigatória.")
-        @Past(message = "Data de nascimento deve ser uma data passada.")
-        @JsonFormat(pattern = "dd/MM/yyyy")
-        LocalDate dataNascimento,
+        // Data de nascimento REMOVIDA (Pertence apenas a Cliente)
 
-        @NotBlank(message = "Senha é obrigatória.")
+        // @NotBlank REMOVIDO para permitir que a senha seja opcional na edição
         @Size(min = 8, message = "Senha deve ter no mínimo 8 caracteres.")
         String senha,
 

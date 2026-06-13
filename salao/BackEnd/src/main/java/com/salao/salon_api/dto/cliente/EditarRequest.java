@@ -12,11 +12,10 @@ public record EditarRequest(
         @Size(max = 150)
         String nomeCompleto,
 
-        @NotNull(message = "Data de nascimento é obrigatória.")
-        @Past(message = "Data de nascimento deve ser uma data passada.")
+        // Data de nascimento: Se não for obrigatória na edição, remova o @NotNull
         LocalDate dataNascimento,
 
-        @NotBlank(message = "Senha é obrigatória.")
+        // @NotBlank REMOVIDO para que a senha seja opcional na edição
         @Size(min = 8, message = "Senha deve ter no mínimo 8 caracteres.")
         String senha,
 

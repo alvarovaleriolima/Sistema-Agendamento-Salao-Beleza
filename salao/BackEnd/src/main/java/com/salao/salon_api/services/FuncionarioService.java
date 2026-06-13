@@ -52,14 +52,17 @@ public class FuncionarioService {
     // -----------------------------------------------------------------------
     // RFS02 – Consultar Funcionário
     // -----------------------------------------------------------------------
-
-    /** Busca por login — retorna dados completos (sem senha) */
+    /**
+     * Busca por login — retorna dados completos (sem senha)
+     */
     @Transactional(readOnly = true)
     public DetalheResponse consultarPorLogin(String login) {
         return DetalheResponse.from(buscarPorLoginOuLancar(login));
     }
 
-    /** Busca por nome — retorna login + perfil de cada resultado */
+    /**
+     * Busca por nome — retorna login + perfil de cada resultado
+     */
     @Transactional(readOnly = true)
     public List<ResumoNomeResponse> consultarPorNome(String nome) {
         return repository.findByNomeCompletoContainingIgnoreCase(nome)
@@ -68,7 +71,9 @@ public class FuncionarioService {
                 .toList();
     }
 
-    /** Busca por perfil — retorna login + nome de cada resultado */
+    /**
+     * Busca por perfil — retorna login + nome de cada resultado
+     */
     @Transactional(readOnly = true)
     public List<ResumoPerfilResponse> consultarPorPerfil(PerfilFuncionario perfil) {
         return repository.findByPerfil(perfil)
@@ -76,12 +81,13 @@ public class FuncionarioService {
                 .map(ResumoPerfilResponse::from)
                 .toList();
     }
+
     @Transactional(readOnly = true)
     public List<DetalheResponse> listarTodos() {
         return repository.findAll()
-            .stream()
-            .map(DetalheResponse::from)
-            .toList();
+                .stream()
+                .map(DetalheResponse::from)
+                .toList();
     }
 
     // -----------------------------------------------------------------------
@@ -94,7 +100,9 @@ public class FuncionarioService {
         validarCamposProfissional(dto.perfil(), dto.especialidade(), dto.horarioTrabalho());
 
         f.setNomeCompleto(dto.nomeCompleto());
-        f.setSenha(dto.senha());
+        if (dto.senha() != null && !dto.senha().isBlank()) {
+            f.setSenha(dto.senha());
+        }
         f.setPerfil(dto.perfil());
         f.setTelefone(dto.telefone());
         f.setEmail(dto.email());
@@ -124,11 +132,10 @@ public class FuncionarioService {
     // -----------------------------------------------------------------------
     // Helpers internos
     // -----------------------------------------------------------------------
-
     private Funcionario buscarPorLoginOuLancar(String login) {
         return repository.findByLogin(login)
                 .orElseThrow(() -> new RecursoNaoEncontradoException(
-                        "Funcionário não encontrado com o login: " + login));
+                "Funcionário não encontrado com o login: " + login));
     }
 
     private void validarLoginUnico(String login) {
@@ -139,11 +146,12 @@ public class FuncionarioService {
     }
 
     /**
-     * RFS01: quando perfil = PROFISSIONAL, especialidade e horário são obrigatórios.
+     * RFS01: quando perfil = PROFISSIONAL, especialidade e horário são
+     * obrigatórios.
      */
     private void validarCamposProfissional(PerfilFuncionario perfil,
-                                            String especialidade,
-                                            String horarioTrabalho) {
+            String especialidade,
+            String horarioTrabalho) {
         if (perfil == PerfilFuncionario.PROFISSIONAL) {
             if (especialidade == null || especialidade.isBlank()) {
                 throw new RegraDeNegocioException(

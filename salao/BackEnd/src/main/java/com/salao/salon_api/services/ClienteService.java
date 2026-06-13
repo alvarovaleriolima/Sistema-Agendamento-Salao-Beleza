@@ -72,11 +72,19 @@ public class ClienteService {
         Cliente c = buscarPorLoginOuLancar(login);
 
         c.setNomeCompleto(dto.nomeCompleto());
-        c.setDataNascimento(dto.dataNascimento());
-        c.setSenha(dto.senha());
+        
+        // Só atualiza a data se ela não for nula
+        if (dto.dataNascimento() != null) {
+            c.setDataNascimento(dto.dataNascimento());
+        }
+
+        // Só atualiza a senha se o usuário realmente digitou algo novo!
+        if (dto.senha() != null && !dto.senha().isBlank()) {
+            c.setSenha(dto.senha());
+        }
+        
         c.setTelefone(dto.telefone());
         c.setEmail(dto.email());
-        // Status NÃO é alterado aqui (RFS07 – Nota)
 
         return DetalheResponse.from(repository.save(c));
     }
