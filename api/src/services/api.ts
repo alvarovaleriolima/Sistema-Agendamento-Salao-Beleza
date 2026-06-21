@@ -4,6 +4,8 @@ export type PerfilFuncionario = 'ADMINISTRADOR' | 'RECEPCIONISTA' | 'PROFISSIONA
 export type Especialidade = 'CABELO' | 'MANICURE' | 'PEDICURE' | 'ESTETICA' | 'MAQUIAGEM' | 'DEPILACAO' | 'SOBRANCELHA' | 'MASSAGEM';
 export type Status = 'ATIVO' | 'INATIVO';
 export type StatusAgendamento = 'AGENDADO' | 'CONCLUIDO' | 'CANCELADO';
+export type FormaPagamento = 'DINHEIRO' | 'PIX' | 'CARTAO_DEBITO' | 'CARTAO_CREDITO';
+export type StatusPagamento = 'PAGO' | 'PENDENTE';
 
 export interface FuncionarioResponse {
   id: number; nomeCompleto: string; login: string; perfil: PerfilFuncionario;
@@ -29,6 +31,20 @@ export interface AgendamentoResponse {
   valorServico: number; duracaoMinutos: number;
   dataHora: string; status: StatusAgendamento; observacao?: string;
 }
+
+export interface PagamentoResponse {
+  id: number;
+  clienteId: number;
+  agendamentoId: number;
+  dataPagamento?: string; // dd/MM/yyyy, vem nulo enquanto PENDENTE
+  valor: number;
+  formaPagamento?: FormaPagamento;
+  status: StatusPagamento;
+}
+
+export type AuthSession =
+  | { tipo: 'funcionario'; usuario: FuncionarioResponse }
+  | { tipo: 'cliente'; usuario: ClienteResponse };
 
 async function req<T>(method: string, path: string, body?: unknown): Promise<T> {
   const opts: RequestInit = { method, headers: { 'Content-Type': 'application/json' } };
@@ -76,5 +92,20 @@ export const api = {
     criar: (d: object) => req<AgendamentoResponse>('POST', '/agendamentos', d),
     editar: (id: number, d: object) => req<AgendamentoResponse>('PUT', `/agendamentos/${id}`, d),
     cancelar: (id: number) => req<void>('PATCH', `/agendamentos/${id}/cancelar`),
+  },
+  pagamentos: {
+    listar: () => req<PagamentoResponse[]>('GET', '/pagamentos'),
+    porCliente: (clienteId: number) => req<PagamentoResponse[]>('GET', `/pagamentos/cliente/${clienteId}`),
+    porAgendamento: (agendamentoId: number) => req<PagamentoResponse[]>('GET', `/pagamentos/agendamento/${agendamentoId}`),
+    porStatus: (status: StatusPagamento) => req<PagamentoResponse[]>('GET', `/pagamentos/status/${status}`),
+    criar: (d: object) => req<PagamentoResponse>('POST', '/pagamentos', d),
+    editar: (id: number, d: object) => req<PagamentoResponse>('PUT', `/pagamentos/${id}`, d),
+    excluir: (id: number) => req<void>('DELETE', `/pagamentos/${id}`),
+  },
+  auth: {
+    loginFuncionario: (login: string, senha: string) =>
+      req<FuncionarioResponse>('POST', '/auth/funcionario/login', { login, senha }),
+    loginCliente: (login: string, senha: string) =>
+      req<ClienteResponse>('POST', '/auth/cliente/login', { login, senha }),
   },
 };

@@ -30,15 +30,18 @@ public class AgendamentoService {
     private final ClienteService clienteService;
     private final FuncionarioService funcionarioService;
     private final ServicoService servicoService;
+    private final PagamentoService pagamentoService;
 
     public AgendamentoService(AgendamentoRepository repository,
                               ClienteService clienteService,
                               FuncionarioService funcionarioService,
-                              ServicoService servicoService) {
+                              ServicoService servicoService,
+                              PagamentoService pagamentoService) {
         this.repository = repository;
         this.clienteService = clienteService;
         this.funcionarioService = funcionarioService;
         this.servicoService = servicoService;
+        this.pagamentoService = pagamentoService;
     }
 
     @Transactional
@@ -64,7 +67,12 @@ public class AgendamentoService {
         a.setStatus(StatusAgendamento.AGENDADO);
         a.setObservacao(dto.getObservacao());
 
-        return AgendamentoResponseDTO.fromEntity(repository.save(a));
+        Agendamento saved = repository.save(a);
+
+        // Create pending payment for this agendamento
+        pagamentoService.criarPagamentoPendente(saved);
+
+        return AgendamentoResponseDTO.fromEntity(saved);
     }
 
     public List<AgendamentoResponseDTO> listarTodos() {
@@ -91,14 +99,6 @@ public class AgendamentoService {
         if (dto.getObservacao() != null) a.setObservacao(dto.getObservacao());
 
         return AgendamentoResponseDTO.fromEntity(repository.save(a));
-    }
-
-    @Transactional
-    public void cancelar(Long id) {
-        Agendamento a = getOrThrow(id);
-        if (a.getStatus() == StatusAgendamento.CANCELADO) throw new NegocioException("Agendamento já está cancelado.");
-        a.setStatus(StatusAgendamento.CANCELADO);
-        repository.save(a);
     }
 
     private Agendamento getOrThrow(Long id) {

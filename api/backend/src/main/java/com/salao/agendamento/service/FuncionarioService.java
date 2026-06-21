@@ -1,9 +1,11 @@
 package com.salao.agendamento.service;
 
 import com.salao.agendamento.dto.*;
+import com.salao.agendamento.entity.Agendamento;
 import com.salao.agendamento.entity.Funcionario;
 import com.salao.agendamento.enums.PerfilFuncionario;
 import com.salao.agendamento.enums.Status;
+import com.salao.agendamento.enums.StatusAgendamento;
 import com.salao.agendamento.exception.NegocioException;
 import com.salao.agendamento.exception.RecursoNaoEncontradoException;
 import com.salao.agendamento.repository.AgendamentoRepository;
@@ -18,14 +20,17 @@ import java.util.List;
 @Service
 public class FuncionarioService {
 
-    private final FuncionarioRepository repository;
-    private final AgendamentoRepository agendamentoRepository;
+private final FuncionarioRepository repository;
+private final AgendamentoRepository agendamentoRepository;
+private final AgendamentoCancelamentoService agendamentoCancelamentoService;
 
-    public FuncionarioService(FuncionarioRepository repository,
-                              @Lazy AgendamentoRepository agendamentoRepository) {
-        this.repository = repository;
-        this.agendamentoRepository = agendamentoRepository;
-    }
+public FuncionarioService(FuncionarioRepository repository,
+                          AgendamentoRepository agendamentoRepository,
+                          AgendamentoCancelamentoService agendamentoCancelamentoService) {
+    this.repository = repository;
+    this.agendamentoRepository = agendamentoRepository;
+    this.agendamentoCancelamentoService = agendamentoCancelamentoService;
+}
 
     @Transactional
     public FuncionarioResponseDTO inserir(FuncionarioRequestDTO dto) {
@@ -99,11 +104,15 @@ public class FuncionarioService {
         Funcionario f = getOrThrow(login);
         if (f.getStatus() == Status.INATIVO) throw new NegocioException("Funcionário já está inativo.");
 
+        // Cancel future agendamentos and send notifications
+        LocalDateTime agora = LocalDateTime.now();
+        List<Agendamento> futuros = agendamentoRepository.findByFuncionarioAndDataHoraAfterAndStatus(f, agora, StatusAgendamento.AGENDADO);
+        for (Agendamento a : futuros) {
+            agendamentoCancelamentoService.cancelar(a.getId());
+        }
+
         f.setStatus(Status.INATIVO);
         repository.save(f);
-
-        // Cancela agendamentos futuros deste profissional
-        agendamentoRepository.cancelarFuturosPorFuncionario(f, LocalDateTime.now());
     }
 
     public Funcionario getOrThrow(String login) {

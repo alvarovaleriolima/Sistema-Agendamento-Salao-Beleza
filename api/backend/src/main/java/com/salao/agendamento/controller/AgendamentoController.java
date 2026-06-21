@@ -4,6 +4,7 @@ import com.salao.agendamento.dto.AgendamentoRequestDTO;
 import com.salao.agendamento.dto.AgendamentoResponseDTO;
 import com.salao.agendamento.dto.AgendamentoUpdateDTO;
 import com.salao.agendamento.enums.StatusAgendamento;
+import com.salao.agendamento.service.AgendamentoCancelamentoService;
 import com.salao.agendamento.service.AgendamentoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -17,9 +18,12 @@ import java.util.List;
 public class AgendamentoController {
 
     private final AgendamentoService service;
+    private final AgendamentoCancelamentoService cancelamentoService;
 
-    public AgendamentoController(AgendamentoService service) {
+    public AgendamentoController(AgendamentoService service,
+                                  AgendamentoCancelamentoService cancelamentoService) {
         this.service = service;
+        this.cancelamentoService = cancelamentoService;
     }
 
     @PostMapping
@@ -43,7 +47,7 @@ public class AgendamentoController {
 
     @PatchMapping("/{id}/cancelar")
     public ResponseEntity<Void> cancelar(@PathVariable Long id) {
-        service.cancelar(id);
+        cancelamentoService.cancelar(id);
         return ResponseEntity.noContent().build();
     }
 }
