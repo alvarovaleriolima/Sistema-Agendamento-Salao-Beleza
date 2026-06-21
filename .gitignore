@@ -56,3 +56,11 @@ postman/
 # Arquivos temporários
 tmp/
 temp/
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Relatorios Selenium
+Testes-Selenium/*.html

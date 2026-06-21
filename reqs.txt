@@ -1,0 +1,423 @@
+Logotipo do cliente 
+Logotipo do cliente 
+Sistema de Agendamento para salão de Beleza Cliente: Salão de Beleza - Gestão Interna e Clientes 
+Código do Projeto - Nome do Projeto: REQ-SAB2026 - Sistema de Agendamento para Salão de Beleza 
+Versão 1.1 
+SWFactory Consultoria e Sistemas Ltda
+Rua Santana, 179, sala 306/308
+CEP: 37200-000 Lavras – MG
+(35) 3822-8148http://www.swfactory.com.br
+Revisões do Documento
+Revisões são melhoramentos na estrutura do documento e também no seu conteúdo. O objetivo primário desta tabela é a fácil identificação da versão do documento. Toda modificação no documento deve constar nesta tabela.
+Data
+Versão
+Descrição
+Autor
+dd/mm/aaaa
+x.x
+30/05/2026
+1.0
+Auditorias do Documento
+Auditorias são inspeções conduzidas o SEPG – Software Engineer Process Group (Grupo de Engenharia de Processo de Software), e tem por objetivo garantir uma qualidade mínima dos artefatos gerados durante o processo de desenvolvimento. Essa tabela pode ser utilizada também pelo GN – Gerente da Área de Negócio com o objetivo de documentar a viabilidade do mesmo.
+Data
+Versão
+Descrição
+Autor
+dd/mm/aaaa
+x.x
+ÍNDICE
+1.INTRODUÇÃO4
+1.1Convenções, termos e abreviações4
+1.1.1Identificação dos Requisitos4
+1.1.2Prioridades dos Requisitos5
+2.VISÃO GERAL DO PRODUTO/SERVIÇO5
+2.1Abrangência e sistemas relacionados5
+2.2Descrição do cliente5
+2.3Descrição dos usuários5
+2.3.1<Nome de um tipo específico de usuário>6
+2.3.2<Nome de outro tipo específico de usuário >6
+2.3.3…6
+3.REQUISITOS FUNCIONAIS6
+3.1 Requisitos Funcionais de Sistema (Gestão Operacional) 6
+[RFS01] Inserir Usuário
+[RFS02] Consultar Usuário
+[RFS03] Editar Usuário
+[RFS04] Remover Usuário
+[RFS05] Inserir Cliente
+[RFS06] Consultar Cliente
+[RFS07] Editar Cliente
+[RFS08] Inativar Cliente
+[RFS09] Inserir Profissional
+[RFS10] Consultar Profissional
+[RFS11] Editar Profissional
+[RFS12] Inativar Profissional
+[RFS13] Inserir Serviço
+[RFS14] Consultar Serviço
+[RFS15] Editar Serviço
+[RFS16] Remover Serviço
+[RFS17] Inserir Agendamento
+[RFS18] Consultar Agendamento
+[RFS19] Editar Agendamento
+[RFS20] Cancelar Agendamento
+[RFS21] Consultar Agenda
+3.2 Requisitos Funcionais de Cliente e Negócio 
+[RFC01] Consultar Histórico de Atendimentos
+[RFC02] Controlar Pagamentos
+[RFC03] Enviar Notificações Automáticas
+[RFC04] Gerar Relatório de Faturamento Financeiro
+[RFC05] Gerar Relatório de Desempenho e Faltas (Absenteísmo)
+4.REQUISITOS NÃO FUNCIONAIS6
+4.1Usabilidade7
+[RNF01] Interface Responsiva 7
+[RNF02] Facilidade de Aprendizado 7
+4.2Confiabilidade7
+[RNF03] Disponibilidade do Sistema 
+[RNF04] Persistência de Agendamentos 7
+4.3Desempenho7
+[RNF05] Tempo de Resposta 7
+4.4Segurança7
+[RNF07] Controle de Acesso Baseado em Perfis 
+[RNF08] Criptografia de Dados Sensíveis 7
+4.5Distribuição8
+[RNF09] Implantação em Nuvem 8
+4.6Padrões8
+[RNF10] Conformidade com a LGPD 8
+4.7Hardware e software8
+[RNF11] Compatibilidade de Navegadores 8
+5.RASTREABILIDADE8
+6.MUDANÇAS NOS REQUISITOS8
+7.REFERÊNCIAS9
+INTRODUÇÃO
+ 
+Aplicativo de Agendamento para Salão de Beleza com Automação RPA .
+Este documento especifica os requisitos do Aplicativo de Agendamento para Salão de Beleza com Automação RPA, fornecendo aos desenvolvedores as informações necessárias para a execução de seu projeto e implementação, assim como para a realização dos testes e homologação.
+Esta introdução fornece as informações necessárias para fazer um bom uso deste documento, explicitando seus objetivos e as convenções que foram adotadas no texto. As demais seções apresentam a especificação do <nome do produto ou serviço> e estão organizadas como descrito abaixo:
+Seção 2 - Descrição geral do produto/serviço: apresenta uma visão geral do produto/serviço, caracterizando qual é o seu escopo e descrevendo seus usuários.
+Seção 3 - Requisitos funcionais: lista e descreve os requisitos funcionais do produto/serviço, especificando seus objetivos, funcionalidades, atores e prioridades.
+Seção 4 - Requisitos não funcionais: especifica todos os requisitos não funcionais do produto/serviço, divididos em requisitos de usabilidade, confiabilidade, desempenho, segurança, distribuição, adequação a padrões e requisitos de hardware e software.
+Seção 5 - Rastreabilidade: apresenta os relacionamentos entre os requisitos do produto/serviço.
+Seção 6 - Referências: contém uma lista de referências para outros documentos relacionados
+Convenções, termos e abreviações
+A correta interpretação deste documento exige o conhecimento de algumas convenções e termos específicos, que são descritos a seguir.
+Identificação dos Requisitos
+Por convenção, a referência a requisitos é feita através do identificador do requisito, de acordo com o esquema abaixo:
+[identificador de tipo de requisito.identificador do requisito]
+O identificador de tipo de requisito pode ser: 
+RF – requisito funcional 
+RNF – requisito não-funcional
+Identificador do requisito é um número, criado sequencialmente, que determina que aquele requisito é único para um determinado tipo de requisito.
+Ex: RFS01, RFC02, RNF001, RNF002.
+Prioridades dos Requisitos
+Para estabelecer a prioridade dos requisitos foram adotadas as denominações “essencial”, “importante” e “desejável”. 
+Essencial é o requisito sem o qual o sistema não entra em funcionamento. Requisitos essenciais são requisitos imprescindíveis, que têm que ser implementados impreterivelmente.
+Importante é o requisito sem o qual o sistema entra em funcionamento, mas de forma não satisfatória. Requisitos importantes devem ser implementados, mas, se não forem, o sistema poderá ser implantado e usado mesmo assim.
+Desejável é o requisito que não compromete as funcionalidades básicas do sistema, isto é, o sistema pode funcionar de forma satisfatória sem ele. Requisitos desejáveis são requisitos que podem ser deixados para versões posteriores do sistema, caso não haja tempo hábil para implementá-los na versão que está sendo especificada.
+VISÃO GERAL DO PRODUTO/SERVIÇO
+ 
+O sistema deverá atender:
+Clientes
+Recepcionistas
+Profissionais do salão
+Gerentes/Administradores
+O aplicativo será acessível via Web e Mobile.
+REQUISITOS FUNCIONAIS
+3.1 Requisitos Funcionais de Sistema
+3.1.1 [RFS01] Inserir Usuário
+Atores: Administrador(a)
+Esse requisito funcional começa quando o ator deseja cadastrar um novo usuário no sistema. Para isso, deverá informar os atributos descritos na Tabela 01.
+Tabela 01 – Atributos do Usuário
+Nome do Campo
+Descrição do Campo
+*Login
+Nome de acesso ao sistema (deve ser único)
+*Senha
+Senha de acesso com no mínimo 8 caracteres
+*Perfil
+Campo fechado. Opções: Administrador(a), Recepcionista, Profissional ou Cliente
+CRM
+CRM do(a) médico(a)
+*Telefone
+Campo fechado. Número de telefone no formato: (00) 00000-0000
+E-mail
+Endereço de e-mail
+O sistema deverá validar os campos obrigatórios e garantir que o login seja único.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.2 [RFS02] Consultar Usuário
+Atores: Administrador(a)
+Esse requisito funcional começa quando o ator deseja consultar um usuário cadastrado.
+O sistema deverá permitir a busca por:• Login• Nome• Perfil
+Após a busca, o sistema deverá exibir os dados do usuário, exceto sua senha.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.3 [RFS03] Editar Usuário
+Atores: Administrador(a)
+Esse requisito funcional começa quando o ator deseja alterar os dados de um usuário.
+O sistema deverá permitir a edição dos dados da Tabela 01.
+Para alteração da senha será necessária a confirmação da senha atual.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.4 [RFS04] Remover Usuário
+Atores: Administrador(a)
+Esse requisito funcional começa quando o ator deseja remover um usuário do sistema.
+O sistema deverá solicitar confirmação antes da exclusão.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.5 [RFS05] Inserir Cliente
+Atores: Administrador(a), Recepcionista
+Esse requisito funcional começa quando o ator deseja cadastrar um cliente no sistema. Para isso, deverá informar os atributos descritos na Tabela 02.
+Tabela 02 – Atributos do Cliente
+Nome do Campo
+Descrição do Campo
+*Nome Completo
+Nome completo do cliente
+*Telefone
+Campo fechado. Número de telefone no formato: (00) 00000-0000
+E-mail
+Endereço de e-mail
+Data de Nascimento
+Campo fechado. Data no formato: DD/MM/AAAA
+Observações
+Informações adicionais sobre o cliente
+O sistema deverá validar os campos obrigatórios antes da confirmação do cadastro.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.6 [RFS06] Consultar Cliente
+Atores: Administrador(a), Recepcionista
+Esse requisito funcional começa quando o ator deseja consultar um cliente cadastrado.
+O sistema deverá permitir busca por:• Nome• Telefone• E-mail
+Após localizar o cliente, o sistema deverá exibir seus dados completos.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.7 [RFS07] Editar Cliente
+Atores: Administrador(a), Recepcionista
+Esse requisito funcional começa quando o ator deseja alterar os dados de um cliente.
+O sistema deverá permitir editar os dados da Tabela 02.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.8 [RFS08] Inativar Cliente
+Atores: Administrador(a), Recepcionista
+Esse requisito funcional começa quando o ator deseja inativar um cliente.
+O sistema deverá solicitar confirmação antes da inativação.
+Clientes inativos não poderão realizar novos agendamentos.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.9 [RFS09] Inserir Profissional
+Atores: Administrador(a)
+Esse requisito funcional começa quando o ator deseja cadastrar um profissional. Para isso, deverá informar os atributos descritos na Tabela 03.
+Tabela 03 – Atributos do Profissional
+Nome do Campo
+Descrição do Campo
+*Nome Completo
+Nome completo do profissional
+*Especialidade
+Área de atuação
+*Horário de Trabalho
+Campo fechado. Horário de início e término do expediente no formato: HH:MM às HH:MM
+Dias de Folga
+Campo fechado. Seleção múltipla dos dias da semana em que não haverá atendimento
+Status
+Campo fechado. Opções: Ativo ou Inativo
+O sistema deverá validar os campos obrigatórios.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.10 [RFS10] Consultar Profissional
+Atores: Administrador(a), Recepcionista
+O sistema deverá permitir consulta por:• Nome• Especialidade
+Após a busca, os dados completos deverão ser exibidos.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.11 [RFS11] Editar Profissional
+Atores: Administrador(a)
+O sistema deverá permitir a edição dos dados da Tabela 03.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.12 [RFS12] Inativar Profissional
+Atores: Administrador(a)
+O sistema deverá solicitar confirmação antes da inativação.
+Caso existam agendamentos futuros vinculados ao profissional, o sistema deverá alertar o usuário antes da confirmação.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.13 [RFS13] Inserir Serviço
+Atores: Administrador(a)
+Esse requisito funcional começa quando o ator deseja cadastrar um serviço. Para isso, deverá informar os atributos descritos na Tabela 04.
+Tabela 04 – Atributos do Serviço
+Nome do Campo
+Descrição do Campo
+*Nome do Serviço
+Nome do Serviço
+*Descrição
+Descrição do procedimento
+*Duração Estimada
+Campo fechado. Tempo previsto para realização do serviço no formato HH:MM ou em minutos.
+*Valor
+Valor cobrado pelo serviço (não será permitido valores negativos)
+*Profissionais Habilitados
+Campo fechado. Profissionais aptos a executar o serviço
+O sistema deverá validar os campos obrigatórios.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.14 [RFS14] Consultar Serviço
+Atores: Administrador(a), Recepcionista
+O sistema deverá permitir busca por:• Nome do serviço
+Após a busca, os dados do serviço deverão ser exibidos.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.15 [RFS15] Editar Serviço
+Atores: Administrador(a)
+O sistema deverá permitir editar os dados da Tabela 04.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.16 [RFS16] Remover Serviço
+Atores: Administrador(a)
+O sistema deverá solicitar confirmação antes da exclusão.
+Caso existam agendamentos futuros vinculados ao serviço, a exclusão não poderá ser realizada.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.17 [RFS17] Inserir Agendamento
+Atores: Cliente, Recepcionista
+Esse requisito funcional começa quando o ator deseja agendar um serviço. Para isso, deverá informar os atributos descritos na Tabela 05.
+Tabela 05 – Atributos do Agendamento
+Nome do Campo
+Descrição do Campo
+*Cliente
+Campo fechado. Cliente previamente cadastrado no sistema
+*Serviço
+Campo fechado. Serviço desejado
+*Profissional
+Campo fechado. Profissional responsável
+*Data
+Campo fechado. Data do atendimento no formato DD/MM/AAAA
+*Horário
+Campo fechado. Horário do atendimento no formato HH:MM
+O sistema deverá verificar a disponibilidade do profissional e impedir conflitos de agenda.
+Caso o horário não esteja disponível, deverão ser sugeridos horários alternativos.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.18 [RFS18] Consultar Agendamento
+Atores: Administrador(a), Recepcionista, Profissional
+O sistema deverá permitir consulta por:• Cliente• Profissional• Data
+Após a busca, os dados do agendamento deverão ser exibidos.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.19 [RFS19] Editar Agendamento
+Atores: Cliente, Recepcionista
+O sistema deverá permitir alterar:• Data• Horário• Profissional
+O sistema deverá validar novamente a disponibilidade do profissional antes da confirmação.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.20 [RFS20] Cancelar Agendamento
+Atores: Cliente, Recepcionista, Administrador(a)
+O sistema deverá solicitar confirmação antes do cancelamento.
+Ao cancelar, o horário deverá ser liberado automaticamente na agenda do profissional.
+O cancelamento deverá ser registrado para fins de auditoria e relatórios.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.1.21 [RFS21] Consultar Agenda
+Atores: Recepcionista, Profissional
+O sistema deverá permitir visualizar os agendamentos por:• Dia• Semana• Mês
+Profissionais poderão visualizar apenas sua própria agenda.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+3.2 Requisitos Funcionais de Cliente
+3.2.1 [RFC01] Consultar Histórico de Atendimentos
+Atores: Profissional, Recepcionista, Administrador(a)
+Esse requisito funcional começa quando o ator deseja consultar o histórico de atendimentos realizados por um cliente.
+O sistema deverá permitir a busca pelos seguintes critérios:• Nome do cliente• Telefone• Período
+ O sistema deverá fornecer os atributos descritos na Tabela 06.
+Tabela 06 – Atributos do Histórico de Atendimentos
+Nome do Campo
+Descrição do Campo
+*Cliente
+Campo fechado. Nome de cliente
+*Data
+Campo fechado. Data do atendimento no formato DD/MM/AAAA
+*Serviço
+Campo fechado. Serviço desejado
+*Profissional
+Campo fechado. Profissional responsável pelo atendimento
+*Valor
+Valor pago pelo serviço
+O sistema deverá manter todos os registros de atendimentos realizados, não permitindo a exclusão desses registros.
+Prioridade: [ ] Essencial [X] Importante [ ] Desejável
+3.2.2 [RFC02] Controlar Pagamentos
+Atores: Administrador(a), Recepcionista
+Esse requisito funcional começa quando o ator deseja registrar ou consultar pagamentos referentes aos serviços prestados.
+ O sistema deverá fornecer os atributos descritos na Tabela 07.
+Tabela 07 – Atributos do Pagamento
+Nome do Campo
+Descrição do Campo
+*Cliente
+Campo fechado. Nome do cliente relacionado ao pagamento
+*Data
+Campo fechado. Data da realização do pagamento no formato DD/MM/AAAA
+*Valor
+Valor pago 
+*Forma de Pagamento
+Campo fechado. Opções: Dinheiro, PIX, Cartão de Débito, Cartão de Crédito
+Status
+Campo fechado. Opções: Pago ou Pendente
+O sistema deverá impedir valores negativos e registrar todas as movimentações financeiras.
+Prioridade: [ ] Essencial [X] Importante [ ] Desejável
+3.2.3 [RFC03] Enviar Notificações Automáticas
+Atores: Sistema
+Esse requisito funcional começa quando existir um agendamento criado, alterado ou próximo da data de realização.
+O sistema deverá levar em consideração os atributos da Tabela 08.
+Tabela 08 – Atributos da Notificação
+Nome do Campo
+Descrição do Campo
+*Cliente
+Campo fechado. Destinatário da notificação
+*Tipo de Notificação
+Campo fechado
+Opções: Confirmação, Lembrete, Reagendamento ou Cancelamento
+*Data de Envio
+Campo fechado. Data da notificação no formato DD/MM/AAAA
+Canal de Envio
+Campo fechado. Opções: WhatsApp ou E-mail
+O sistema deverá enviar automaticamente notificações relacionadas aos agendamentos.
+Os lembretes deverão ser enviados em horários configuráveis pelo administrador do sistema.
+Prioridade: [ ] Essencial [X] Importante [ ] Desejável
+3.2.4 [RFC04] Gerar Relatório de Faturamento Financeiro
+Atores: Administrador(a)
+Esse requisito funcional começa quando o ator deseja analisar a receita do salão de beleza. O sistema deverá permitir a filtragem por período (Data Inicial e Data Final), profissional e forma de pagamento. O relatório gerado deverá exibir:
+A listagem de todos os serviços pagos no período.
+O valor total bruto arrecadado.
+O cálculo automático do valor de comissão devido a cada profissional.
+O sistema deverá permitir a exportação desse relatório nos formatos PDF e Excel.
+Prioridade: [ ] Essencial [X] Importante [ ] Desejável
+3.2.5 [RFC05] Gerar Relatório de Desempenho e Faltas
+Atores: Administrador(a), Gerente
+Esse requisito funcional permite mapear a produtividade do estabelecimento. O sistema deverá processar os dados históricos e emitir um relatório baseado em um período selecionado de datas. O relatório gerado deverá exibir:
+O ranking dos serviços mais procurados pelos clientes.
+O total de agendamentos realizados por profissional.
+A taxa de absenteísmo (número de agendamentos cancelados ou com falta do cliente vs. agendamentos concluídos).
+Prioridade: [ ] Essencial [X] Importante [ ] Desejável
+REQUISITOS NÃO FUNCIONAIS
+4. REQUISITOS NÃO FUNCIONAIS
+4.1 Usabilidade
+[RNF01] Interface Responsiva: O sistema deve possuir interface adaptável (responsiva) para funcionar perfeitamente em navegadores web de computadores e em dispositivos móveis (smartphones e tablets).
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+[RNF02] Facilidade de Aprendizado: O sistema deve ser intuitivo, permitindo que uma recepcionista ou profissional do salão consiga realizar um agendamento ou consulta sem treinamento prévio superior a 15 minutos.
+Prioridade: [ ] Essencial [X] Importante [ ] Desejável
+4.2 Confiabilidade
+[RNF03] Disponibilidade do Sistema: O sistema deve estar disponível para os usuários (clientes e funcionários) no mínimo 99,5% do tempo em regime 24/7 (24 horas por dia, 7 dias por semana).
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+[RNF04] Persistência de Agendamentos: Em caso de falha de conexão ou interrupção abrupta do navegador durante um agendamento, o sistema não deve computar o horário como reservado a menos que a transição de salvamento tenha sido concluída com sucesso.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+4.3 Desempenho
+[RNF05] Tempo de Resposta: O tempo de resposta para consultas de horários disponíveis e validações de conflito de agenda não deve ultrapassar 2 segundos sob condições normais de rede.
+Prioridade: [ ] Essencial [X] Importante [ ] Desejável
+[RNF06] Capacidade de Acessos Simultâneos: O backend do sistema deve suportar pelo menos 50 requisições simultâneas de agendamento sem degradação perceptível de performance.
+Prioridade: [ ] Essencial [X] Importante [ ] Desejável
+4.4 Segurança
+[RNF07] Controle de Acesso Baseado em Perfis: O sistema deve restringir o acesso a dados e telas de acordo com o perfil do usuário logado (ex: profissionais só visualizam a própria agenda; clientes não acessam dados financeiros).
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+[RNF08] Criptografia de Dados Sensíveis: As senhas de todos os usuários devem ser armazenadas no banco de dados utilizando algoritmos de hash seguros (como BCrypt ou Argon2), sendo proibido o armazenamento em texto plano.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+4.5 Distribuição
+[RNF09] Implantação em Nuvem: O sistema web deve ser hospedado em um serviço de nuvem confiável (como AWS, Render, Vercel ou Firebase), facilitando o deploy contínuo através do repositório do GitHub.
+Prioridade: [ ] Essencial [X] Importante [ ] Desejável
+4.6 Padrões
+[RNF10] Conformidade com a LGPD: O armazenamento e o tratamento dos dados cadastrais dos clientes (Nome, Telefone e E-mail) devem seguir as diretrizes da Lei Geral de Proteção de Dados (LGPD), garantindo o direito de exclusão cadastral quando solicitado.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+4.7 Hardware e software
+[RNF11] Compatibilidade de Navegadores: O sistema web deve funcionar perfeitamente nos principais navegadores modernos do mercado (Google Chrome, Mozilla Firefox, Microsoft Edge e Safari) sem a necessidade de plugins adicionais.
+Prioridade: [X] Essencial [ ] Importante [ ] Desejável
+RASTREABILIDADE
+A rastreabilidade bidirecional dos requisitos deste projeto está documentada e mapeada na Matriz de Rastreabilidade Bidirecional (MRB), mantida como um artefato de gerência de configuração complementar ao projeto. 
+MUDANÇAS NOS REQUISITOS
+Sempre que seja necessária a introdução de alterações em relação aos requisitos descritos neste documento ou a inclusão de novos requisitos, os seguintes itens devem ser seguidos. <avaliar a adequação de cada item à proposta específica:>
+Toda solicitação de mudança proveniente do Contratante deverá ser documentada por este e enviada a <elemento da empresa fornecedora, geralmente o gerente do projeto>
+Um documento contendo a descrição da solicitação de mudança deve ser assinado pelos <elementos da empresa fornecedora e Cliente>, formalizando assim a solicitação. 
+O tempo necessário para avaliar a viabilidade técnica de uma alteração no escopo delineado nesta proposta será cobrado ao Contratante.
+A empresa fornecedora avaliará o impacto da mudança no cronograma e no custo do serviço e submeterá ao Contratante para aprovação. 
+A empresa fornecedora iniciará a execução da mudança no caso de não haver impacto associado à mesma.>
+<Descrever também se o cliente poderá solicitar mudanças em ferramentas que ele tem acesso.>
+REFERÊNCIAS
+IEEE Std 830-1998: IEEE Recommended Practice for Software Requirements Specifications – Guia de boas práticas adotado para a estrutura deste documento.
+Tabela de Estimativa de Projeto (EST v1.0): Documento interno detalhando o escopo de esforço e tamanho do sistema.
+Cronograma do Projeto (CRO v1.0): Planejamento temporal das sprints de desenvolvimento gerido no ProjectLibre.
+Lei Geral de Proteção de Dados (LGPD): Lei nº 13.709/2018 do Governo Federal do Brasil, utilizada como referência para os requisitos de privacidade.
+Representante do contratado       Representante da contratante
+                                         
+Testemunha 1Testemunha 2
