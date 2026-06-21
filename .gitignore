@@ -64,3 +64,5 @@ __pycache__/
 
 # Relatorios Selenium
 Testes-Selenium/*.html
+Testes-Selenium/evidencias*/
+Testes-Selenium/assets/
