@@ -21,11 +21,11 @@ public class AgendamentoCancelamentoService {
     private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm");
 
     private final AgendamentoRepository repository;
-    private final EmailService emailService;
+    private final NotificacaoService notificacaoService;
 
-    public AgendamentoCancelamentoService(AgendamentoRepository repository, EmailService emailService) {
+    public AgendamentoCancelamentoService(AgendamentoRepository repository, NotificacaoService notificacaoService) {
         this.repository = repository;
-        this.emailService = emailService;
+        this.notificacaoService = notificacaoService;
     }
 
     @Transactional
@@ -35,25 +35,7 @@ public class AgendamentoCancelamentoService {
         if (a.getStatus() == StatusAgendamento.CANCELADO) throw new NegocioException("Agendamento já está cancelado.");
         a.setStatus(StatusAgendamento.CANCELADO);
         Agendamento saved = repository.save(a);
-        sendCancellationEmail(saved);
-    }
-
-    private void sendCancellationEmail(Agendamento agendamento) {
-        Cliente cliente = agendamento.getCliente();
-        Funcionario funcionario = agendamento.getFuncionario();
-        Servico servico = agendamento.getServico();
-        LocalDateTime dataHora = agendamento.getDataHora();
-
-        String clientEmail = cliente.getEmail();
-        if (clientEmail != null && !clientEmail.isBlank()) {
-            emailService.sendCancelationEmail(
-                    clientEmail,
-                    cliente.getNomeCompleto(),
-                    servico.getNome(),
-                    funcionario.getNomeCompleto(),
-                    dataHora.format(DATE_FMT),
-                    dataHora.format(TIME_FMT)
-            );
-        }
+        
+        notificacaoService.enviarCancelamento(saved);
     }
 }

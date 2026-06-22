@@ -31,17 +31,20 @@ public class AgendamentoService {
     private final FuncionarioService funcionarioService;
     private final ServicoService servicoService;
     private final PagamentoService pagamentoService;
+    private final NotificacaoService notificacaoService;
 
     public AgendamentoService(AgendamentoRepository repository,
                               ClienteService clienteService,
                               FuncionarioService funcionarioService,
                               ServicoService servicoService,
-                              PagamentoService pagamentoService) {
+                              PagamentoService pagamentoService,
+                              NotificacaoService notificacaoService) {
         this.repository = repository;
         this.clienteService = clienteService;
         this.funcionarioService = funcionarioService;
         this.servicoService = servicoService;
         this.pagamentoService = pagamentoService;
+        this.notificacaoService = notificacaoService;
     }
 
     @Transactional
@@ -72,6 +75,9 @@ public class AgendamentoService {
         // Create pending payment for this agendamento
         pagamentoService.criarPagamentoPendente(saved);
 
+        // Enviar notificação de criação
+        notificacaoService.enviarConfirmacaoCriacao(saved);
+
         return AgendamentoResponseDTO.fromEntity(saved);
     }
 
@@ -90,13 +96,21 @@ public class AgendamentoService {
         Agendamento a = getOrThrow(id);
         if (a.getStatus() == StatusAgendamento.CANCELADO) throw new NegocioException("Não é possível editar um agendamento cancelado.");
 
+        boolean mudouDataHora = false;
         if (dto.getDataHora() != null && !dto.getDataHora().isBlank()) {
             LocalDateTime nova = parseDataHora(dto.getDataHora());
             if (nova.isBefore(LocalDateTime.now())) throw new NegocioException("Data e hora devem ser no futuro.");
-            a.setDataHora(nova);
+            if (!nova.equals(a.getDataHora())) {
+                a.setDataHora(nova);
+                mudouDataHora = true;
+            }
         }
+        boolean cancelado = false;
         if (dto.getStatus() != null && dto.getStatus() != a.getStatus()) {
             a.setStatus(dto.getStatus());
+            if (dto.getStatus() == StatusAgendamento.CANCELADO) {
+                cancelado = true;
+            }
             
             // Automaticamente aprovar pagamento quando concluído
             if (dto.getStatus() == StatusAgendamento.CONCLUIDO) {
@@ -114,7 +128,15 @@ public class AgendamentoService {
         }
         if (dto.getObservacao() != null) a.setObservacao(dto.getObservacao());
 
-        return AgendamentoResponseDTO.fromEntity(repository.save(a));
+        Agendamento updated = repository.save(a);
+
+        if (cancelado) {
+            notificacaoService.enviarCancelamento(updated);
+        } else if (mudouDataHora) {
+            notificacaoService.enviarConfirmacaoReagendamento(updated);
+        }
+
+        return AgendamentoResponseDTO.fromEntity(updated);
     }
 
     private Agendamento getOrThrow(Long id) {

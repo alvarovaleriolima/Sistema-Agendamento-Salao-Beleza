@@ -50,8 +50,9 @@ def test_relatorio_fluxo_completo(driver):
     time.sleep(1)
     
     # 2. Editar para CONCLUIDO
-    botoes_editar = driver.find_elements(By.XPATH, "//tbody//button[@title='Editar']")
-    botoes_editar[0].click()
+    hoje_str = agora.strftime('%d/%m/%Y')
+    botao_editar_hoje = driver.find_element(By.XPATH, f"//tbody//tr[contains(., '{hoje_str}')]//button[@title='Editar']")
+    botao_editar_hoje.click()
     
     select_status = Select(espera.until(EC.visibility_of_element_located((By.XPATH, "//label[contains(text(), 'Status')]/following-sibling::select"))))
     select_status.select_by_value("CONCLUIDO")
@@ -74,5 +75,9 @@ def test_relatorio_fluxo_completo(driver):
     driver.save_screenshot("evidencias_relatorios/CT01_relatorio_fluxo_completo.png")
     
     # Validar se o faturamento mudou
-    assert faturamento_card.text != "R$ 0,00"
+    try:
+        espera.until(lambda d: faturamento_card.text != "R$ 0,00")
+    except:
+        pass
+    assert faturamento_card.text != "R$ 0,00", f"Faturamento não atualizou. Valor: {faturamento_card.text}"
 

@@ -13,6 +13,13 @@ URL_BASE = "http://localhost:5173/"
 def test_cadastrar_administrador_com_sucesso(driver):
     global login_global_para_duplicacao
     driver.get(URL_BASE)
+    try:
+        WebDriverWait(driver, 3).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input[type='text']"))).send_keys("admin")
+        driver.find_element(By.CSS_SELECTOR, "input[type='password']").send_keys("admin123")
+        driver.find_element(By.CSS_SELECTOR, "button.s-btn-primary").click()
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "//h2[contains(., 'Bem-vindo')]")))
+    except Exception as e:
+        pass
     
     espera = WebDriverWait(driver, 10)
     espera.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(., \'Funcionários\')]"))).click()
@@ -52,6 +59,13 @@ def test_cadastrar_administrador_com_sucesso(driver):
 
 def test_erro_senha_com_7_caracteres(driver):
     driver.get(URL_BASE)
+    try:
+        WebDriverWait(driver, 3).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input[type='text']"))).send_keys("admin")
+        driver.find_element(By.CSS_SELECTOR, "input[type='password']").send_keys("admin123")
+        driver.find_element(By.CSS_SELECTOR, "button.s-btn-primary").click()
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "//h2[contains(., 'Bem-vindo')]")))
+    except Exception as e:
+        pass
     espera = WebDriverWait(driver, 10)
     espera.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(., \'Funcionários\')]"))).click()
     
@@ -86,6 +100,13 @@ def test_erro_senha_com_7_caracteres(driver):
 
 def test_cadastrar_profissional_com_sucesso(driver):
     driver.get(URL_BASE)
+    try:
+        WebDriverWait(driver, 3).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input[type='text']"))).send_keys("admin")
+        driver.find_element(By.CSS_SELECTOR, "input[type='password']").send_keys("admin123")
+        driver.find_element(By.CSS_SELECTOR, "button.s-btn-primary").click()
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "//h2[contains(., 'Bem-vindo')]")))
+    except Exception as e:
+        pass
     espera = WebDriverWait(driver, 10)
     espera.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(., \'Funcionários\')]"))).click()
     
@@ -117,6 +138,13 @@ def test_cadastrar_profissional_com_sucesso(driver):
 
 def test_cadastrar_recepcionista_com_sucesso(driver):
     driver.get(URL_BASE)
+    try:
+        WebDriverWait(driver, 3).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input[type='text']"))).send_keys("admin")
+        driver.find_element(By.CSS_SELECTOR, "input[type='password']").send_keys("admin123")
+        driver.find_element(By.CSS_SELECTOR, "button.s-btn-primary").click()
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "//h2[contains(., 'Bem-vindo')]")))
+    except Exception as e:
+        pass
     espera = WebDriverWait(driver, 10)
     espera.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(., \'Funcionários\')]"))).click()
     
@@ -139,6 +167,13 @@ def test_cadastrar_recepcionista_com_sucesso(driver):
 
 def test_erro_login_duplicado(driver):
     driver.get(URL_BASE)
+    try:
+        WebDriverWait(driver, 3).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input[type='text']"))).send_keys("admin")
+        driver.find_element(By.CSS_SELECTOR, "input[type='password']").send_keys("admin123")
+        driver.find_element(By.CSS_SELECTOR, "button.s-btn-primary").click()
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "//h2[contains(., 'Bem-vindo')]")))
+    except Exception as e:
+        pass
     espera = WebDriverWait(driver, 10)
     espera.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(., \'Funcionários\')]"))).click()
     
@@ -164,6 +199,13 @@ def test_erro_login_duplicado(driver):
 
 def test_buscar_funcionario(driver):
     driver.get(URL_BASE)
+    try:
+        WebDriverWait(driver, 3).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input[type='text']"))).send_keys("admin")
+        driver.find_element(By.CSS_SELECTOR, "input[type='password']").send_keys("admin123")
+        driver.find_element(By.CSS_SELECTOR, "button.s-btn-primary").click()
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "//h2[contains(., 'Bem-vindo')]")))
+    except Exception as e:
+        pass
     espera = WebDriverWait(driver, 10)
     espera.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(., \'Funcionários\')]"))).click()
     global login_global_para_duplicacao
@@ -185,6 +227,13 @@ def test_buscar_funcionario(driver):
 
 def test_editar_funcionario(driver):
     driver.get(URL_BASE)
+    try:
+        WebDriverWait(driver, 3).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input[type='text']"))).send_keys("admin")
+        driver.find_element(By.CSS_SELECTOR, "input[type='password']").send_keys("admin123")
+        driver.find_element(By.CSS_SELECTOR, "button.s-btn-primary").click()
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "//h2[contains(., 'Bem-vindo')]")))
+    except Exception as e:
+        pass
     espera = WebDriverWait(driver, 10)
     espera.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(., \'Funcionários\')]"))).click()
     
@@ -216,10 +265,21 @@ def test_editar_funcionario(driver):
 
 def test_inativar_funcionario(driver):
     driver.get(URL_BASE)
+    try:
+        WebDriverWait(driver, 3).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input[type='text']"))).send_keys("admin")
+        driver.find_element(By.CSS_SELECTOR, "input[type='password']").send_keys("admin123")
+        driver.find_element(By.CSS_SELECTOR, "button.s-btn-primary").click()
+        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "//h2[contains(., 'Bem-vindo')]")))
+    except Exception as e:
+        pass
     espera = WebDriverWait(driver, 10)
     espera.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(., \'Funcionários\')]"))).click()
     
-    botao_inativar = espera.until(EC.element_to_be_clickable((By.XPATH, "(//button[@title='Inativar'])[1]")))
+    # Pega todos os botões de inativar e clica no ÚLTIMO (para não inativar o admin que é o primeiro)
+    botoes_inativar = espera.until(EC.presence_of_all_elements_located((By.XPATH, "//button[@title='Inativar']")))
+    botao_inativar = botoes_inativar[-1]
+    driver.execute_script("arguments[0].scrollIntoView(true);", botao_inativar)
+    time.sleep(1)
     botao_inativar.click()
     
     botao_confirmar = espera.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'btn-danger') and text()='Confirmar']")))
