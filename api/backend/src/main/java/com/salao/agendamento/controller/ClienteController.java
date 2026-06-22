@@ -56,4 +56,15 @@ public class ClienteController {
         service.inativar(login);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/lgpd/{login}")
+    public ResponseEntity<Void> excluirLgpd(@PathVariable String login) {
+        service.excluirLgpd(login);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{login}/historico")
+    public ResponseEntity<List<com.salao.agendamento.dto.HistoricoAtendimentoDTO>> listarHistorico(@PathVariable String login) {
+        return ResponseEntity.ok(service.listarHistorico(login));
+    }
 }

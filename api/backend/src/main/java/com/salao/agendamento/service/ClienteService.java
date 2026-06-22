@@ -10,6 +10,7 @@ import com.salao.agendamento.repository.ClienteRepository;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,11 +25,14 @@ public class ClienteService {
 
     private final ClienteRepository repository;
     private final AgendamentoRepository agendamentoRepository;
+    private final com.salao.agendamento.repository.PagamentoRepository pagamentoRepository;
 
     public ClienteService(ClienteRepository repository,
-                          @Lazy AgendamentoRepository agendamentoRepository) {
+                          @Lazy AgendamentoRepository agendamentoRepository,
+                          @Lazy com.salao.agendamento.repository.PagamentoRepository pagamentoRepository) {
         this.repository = repository;
         this.agendamentoRepository = agendamentoRepository;
+        this.pagamentoRepository = pagamentoRepository;
     }
 
     @Transactional
@@ -40,7 +44,7 @@ public class ClienteService {
         c.setNomeCompleto(dto.getNomeCompleto());
         c.setDataNascimento(parse(dto.getDataNascimento()));
         c.setLogin(dto.getLogin());
-        c.setSenha(dto.getSenha());
+        c.setSenha(BCrypt.hashpw(dto.getSenha(), BCrypt.gensalt()));
         c.setTelefone(dto.getTelefone());
         c.setEmail(dto.getEmail());
         c.setStatus(dto.getStatus());
@@ -69,10 +73,10 @@ public class ClienteService {
         Cliente c = getOrThrow(login);
 
         if (dto.getNovaSenha() != null && !dto.getNovaSenha().isBlank()) {
-            if (dto.getSenhaAtual() == null || !dto.getSenhaAtual().equals(c.getSenha())) {
+            if (dto.getSenhaAtual() == null || !BCrypt.checkpw(dto.getSenhaAtual(), c.getSenha())) {
                 throw new NegocioException("Senha atual incorreta.");
             }
-            c.setSenha(dto.getNovaSenha());
+            c.setSenha(BCrypt.hashpw(dto.getNovaSenha(), BCrypt.gensalt()));
         }
 
         if (dto.getNomeCompleto() != null && !dto.getNomeCompleto().isBlank()) c.setNomeCompleto(dto.getNomeCompleto());
@@ -94,6 +98,31 @@ public class ClienteService {
 
         // Cancela agendamentos futuros deste cliente
         agendamentoRepository.cancelarFuturosPorCliente(c, LocalDateTime.now());
+    }
+
+    @Transactional
+    public void excluirLgpd(String login) {
+        Cliente c = getOrThrow(login);
+        
+        // Anonimização LGPD
+        c.setNomeCompleto("Cliente Excluído (LGPD)");
+        c.setTelefone("(00) 00000-0000");
+        c.setEmail(null);
+        c.setSenha(org.mindrot.jbcrypt.BCrypt.hashpw(java.util.UUID.randomUUID().toString(), org.mindrot.jbcrypt.BCrypt.gensalt()));
+        c.setStatus(Status.INATIVO);
+        
+        repository.save(c);
+
+        // Cancela agendamentos futuros
+        agendamentoRepository.cancelarFuturosPorCliente(c, LocalDateTime.now());
+    }
+
+    public List<HistoricoAtendimentoDTO> listarHistorico(String login) {
+        Cliente c = getOrThrow(login);
+        return pagamentoRepository.findByCliente(c).stream()
+                .filter(p -> p.getStatus() == com.salao.agendamento.enums.StatusPagamento.PAGO)
+                .map(HistoricoAtendimentoDTO::fromEntity)
+                .toList();
     }
 
     public Cliente getOrThrow(String login) {

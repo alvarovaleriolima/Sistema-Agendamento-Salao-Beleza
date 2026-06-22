@@ -36,6 +36,10 @@ export interface PagamentoResponse {
   id: number;
   clienteId: number;
   agendamentoId: number;
+  clienteNome: string;
+  servicoNome: string;
+  profissionalNome: string;
+  dataHoraAgendamento: string;
   dataPagamento?: string; // dd/MM/yyyy, vem nulo enquanto PENDENTE
   valor: number;
   formaPagamento?: FormaPagamento;
@@ -45,6 +49,44 @@ export interface PagamentoResponse {
 export type AuthSession =
   | { tipo: 'funcionario'; usuario: FuncionarioResponse }
   | { tipo: 'cliente'; usuario: ClienteResponse };
+
+export interface FaturamentoReportItemDTO {
+  agendamentoId: number;
+  clienteNome: string;
+  servicoNome: string;
+  profissionalNome: string;
+  dataHoraAgendamento: string;
+  valorServico: number;
+  statusAgendamento: string;
+}
+
+export interface FaturamentoReportDTO {
+  itens: FaturamentoReportItemDTO[];
+  totalBruto: number;
+}
+
+export interface ServicoRankingItemDTO {
+  servicoNome: string;
+  count: number;
+}
+
+export interface ProfissionalPerformanceItemDTO {
+  profissionalNome: string;
+  count: number;
+}
+
+export interface DesempenhoReportDTO {
+  servicoRanking: ServicoRankingItemDTO[];
+  profissionalPerformance: ProfissionalPerformanceItemDTO[];
+  canceladosCount: number;
+}
+
+export interface HistoricoAtendimentoResponse {
+  data: string;
+  servico: string;
+  profissional: string;
+  valor: number;
+}
 
 async function req<T>(method: string, path: string, body?: unknown): Promise<T> {
   const opts: RequestInit = { method, headers: { 'Content-Type': 'application/json' } };
@@ -79,6 +121,8 @@ export const api = {
     criar: (d: object) => req<ClienteResponse>('POST', '/clientes', d),
     editar: (login: string, d: object) => req<ClienteResponse>('PUT', `/clientes/${encodeURIComponent(login)}`, d),
     inativar: (login: string) => req<void>('PATCH', `/clientes/${encodeURIComponent(login)}/inativar`),
+    excluirLgpd: (login: string) => req<void>('DELETE', `/clientes/${encodeURIComponent(login)}/lgpd`),
+    historico: (login: string) => req<HistoricoAtendimentoResponse[]>('GET', `/clientes/${encodeURIComponent(login)}/historico`),
   },
   servicos: {
     listar: () => req<ServicoResponse[]>('GET', '/servicos'),
@@ -107,5 +151,16 @@ export const api = {
       req<FuncionarioResponse>('POST', '/auth/funcionario/login', { login, senha }),
     loginCliente: (login: string, senha: string) =>
       req<ClienteResponse>('POST', '/auth/cliente/login', { login, senha }),
+  },
+  relatorios: {
+    faturamento: (inicio: string, fim: string, funcId?: number) => {
+      let q = `?dataInicio=${encodeURIComponent(inicio)}&dataFim=${encodeURIComponent(fim)}`;
+      if (funcId) q += `&funcionarioId=${funcId}`;
+      return req<FaturamentoReportDTO>('GET', `/relatorios/faturamento${q}`);
+    },
+    desempenho: (inicio: string, fim: string) => {
+      const q = `?dataInicio=${encodeURIComponent(inicio)}&dataFim=${encodeURIComponent(fim)}`;
+      return req<DesempenhoReportDTO>('GET', `/relatorios/desempenho${q}`);
+    }
   },
 };

@@ -7,12 +7,17 @@ import { ClientesPage } from './components/clientes/ClientesPage';
 import { ServicosPage } from './components/servicos/ServicosPage';
 import { AgendamentosPage } from './components/agendamentos/AgendamentosPage';
 import { LoginPage } from './components/auth/LoginPage';
+import { RelatoriosPage } from './components/relatorios/RelatoriosPage';
+import { CaixaPage } from './components/caixa/CaixaPage';
 import { AuthSession } from '../services/api';
 
-type Page = 'funcionarios' | 'clientes' | 'servicos' | 'agendamentos';
+type Page = 'funcionarios' | 'clientes' | 'servicos' | 'agendamentos' | 'relatorios' | 'caixa';
+
 
 const ALL_NAV: { id: Page; label: string; icon: string; section: string; roles: string[] }[] = [
   { id: 'agendamentos', label: 'Agendamentos', icon: 'calendar', section: 'Agenda', roles: ['ADMINISTRADOR', 'RECEPCIONISTA', 'PROFISSIONAL', 'CLIENTE'] },
+  { id: 'caixa', label: 'Caixa', icon: 'dollar-sign', section: 'Gestão', roles: ['ADMINISTRADOR', 'RECEPCIONISTA'] },
+  { id: 'relatorios', label: 'Relatórios', icon: 'bar-chart-2', section: 'Gestão', roles: ['ADMINISTRADOR'] },
   { id: 'funcionarios', label: 'Funcionários', icon: 'users', section: 'Cadastros', roles: ['ADMINISTRADOR'] },
   { id: 'clientes', label: 'Clientes', icon: 'user', section: 'Cadastros', roles: ['ADMINISTRADOR', 'RECEPCIONISTA'] },
   { id: 'servicos', label: 'Serviços', icon: 'tag', section: 'Cadastros', roles: ['ADMINISTRADOR'] },
@@ -103,6 +108,8 @@ export default function App() {
         {page === 'clientes' && <ClientesPage toast={toast} />}
         {page === 'servicos' && <ServicosPage toast={toast} />}
         {page === 'agendamentos' && <AgendamentosPage session={session} toast={toast} />}
+        {page === 'caixa' && <CaixaPage toast={toast} />}
+        {page === 'relatorios' && <RelatoriosPage toast={toast} />}
       </main>
 
       <SToasts toasts={toasts} />

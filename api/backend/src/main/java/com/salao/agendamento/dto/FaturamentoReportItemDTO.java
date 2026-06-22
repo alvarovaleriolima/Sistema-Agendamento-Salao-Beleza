@@ -11,6 +11,8 @@ public class FaturamentoReportItemDTO {
     private String clienteNome;
     private String servicoNome;
     private String profissionalNome;
+    
+    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataHoraAgendamento;
     private BigDecimal valorServico;
     private StatusAgendamento statusAgendamento;

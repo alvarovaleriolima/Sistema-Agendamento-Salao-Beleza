@@ -95,7 +95,23 @@ public class AgendamentoService {
             if (nova.isBefore(LocalDateTime.now())) throw new NegocioException("Data e hora devem ser no futuro.");
             a.setDataHora(nova);
         }
-        if (dto.getStatus() != null) a.setStatus(dto.getStatus());
+        if (dto.getStatus() != null && dto.getStatus() != a.getStatus()) {
+            a.setStatus(dto.getStatus());
+            
+            // Automaticamente aprovar pagamento quando concluído
+            if (dto.getStatus() == StatusAgendamento.CONCLUIDO) {
+                List<com.salao.agendamento.dto.PagamentoResponseDTO> pags = pagamentoService.listarPorAgendamento(a.getId());
+                for (com.salao.agendamento.dto.PagamentoResponseDTO p : pags) {
+                    if (p.getStatus() == com.salao.agendamento.enums.StatusPagamento.PENDENTE) {
+                        com.salao.agendamento.dto.PagamentoRequestDTO pReq = new com.salao.agendamento.dto.PagamentoRequestDTO();
+                        pReq.setStatus(com.salao.agendamento.enums.StatusPagamento.PAGO);
+                        pReq.setDataPagamento(java.time.LocalDate.now());
+                        pReq.setFormaPagamento(com.salao.agendamento.enums.FormaPagamento.DINHEIRO);
+                        pagamentoService.atualizar(p.getId(), pReq);
+                    }
+                }
+            }
+        }
         if (dto.getObservacao() != null) a.setObservacao(dto.getObservacao());
 
         return AgendamentoResponseDTO.fromEntity(repository.save(a));

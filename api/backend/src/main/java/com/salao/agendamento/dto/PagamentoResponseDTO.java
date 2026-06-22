@@ -12,18 +12,32 @@ public class PagamentoResponseDTO {
     private Long id;
     private Long clienteId;
     private Long agendamentoId;
+    
+    // Rich Data for UI
+    private String clienteNome;
+    private String servicoNome;
+    private String profissionalNome;
+    private String dataHoraAgendamento;
+    
     private String dataPagamento; // Format: dd/MM/yyyy
     private BigDecimal valor;
     private FormaPagamento formaPagamento;
     private StatusPagamento status;
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter DATETIME_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     public static PagamentoResponseDTO fromEntity(Pagamento p) {
         PagamentoResponseDTO dto = new PagamentoResponseDTO();
         dto.id = p.getId();
         dto.clienteId = p.getCliente().getId();
         dto.agendamentoId = p.getAgendamento().getId();
+        
+        dto.clienteNome = p.getCliente().getNomeCompleto();
+        dto.servicoNome = p.getAgendamento().getServico().getNome();
+        dto.profissionalNome = p.getAgendamento().getFuncionario().getNomeCompleto();
+        dto.dataHoraAgendamento = p.getAgendamento().getDataHora() != null ? p.getAgendamento().getDataHora().format(DATETIME_FORMAT) : null;
+        
         dto.dataPagamento = p.getDataPagamento() != null ? p.getDataPagamento().format(DATE_FORMAT) : null;
         dto.valor = p.getValor();
         dto.formaPagamento = p.getFormaPagamento();
@@ -51,4 +65,16 @@ public class PagamentoResponseDTO {
 
     public StatusPagamento getStatus() { return status; }
     public void setStatus(StatusPagamento status) { this.status = status; }
+
+    public String getClienteNome() { return clienteNome; }
+    public void setClienteNome(String clienteNome) { this.clienteNome = clienteNome; }
+
+    public String getServicoNome() { return servicoNome; }
+    public void setServicoNome(String servicoNome) { this.servicoNome = servicoNome; }
+
+    public String getProfissionalNome() { return profissionalNome; }
+    public void setProfissionalNome(String profissionalNome) { this.profissionalNome = profissionalNome; }
+
+    public String getDataHoraAgendamento() { return dataHoraAgendamento; }
+    public void setDataHoraAgendamento(String dataHoraAgendamento) { this.dataHoraAgendamento = dataHoraAgendamento; }
 }

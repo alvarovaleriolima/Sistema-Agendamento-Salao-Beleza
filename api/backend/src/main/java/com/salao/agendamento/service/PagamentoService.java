@@ -119,6 +119,12 @@ public class PagamentoService {
             if (p.getFormaPagamento() == null) {
                 throw new NegocioException("Forma de pagamento é obrigatória quando o status é PAGO.");
             }
+            
+            // AUTOMATION: If payment is complete, set Agendamento to CONCLUIDO
+            if (p.getAgendamento().getStatus() == com.salao.agendamento.enums.StatusAgendamento.AGENDADO) {
+                p.getAgendamento().setStatus(com.salao.agendamento.enums.StatusAgendamento.CONCLUIDO);
+                agendamentoRepository.save(p.getAgendamento());
+            }
         }
 
         return PagamentoResponseDTO.fromEntity(repository.save(p));

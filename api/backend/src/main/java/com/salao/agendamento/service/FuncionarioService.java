@@ -13,6 +13,7 @@ import com.salao.agendamento.repository.FuncionarioRepository;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,13 +43,13 @@ public FuncionarioService(FuncionarioRepository repository,
         Funcionario f = new Funcionario();
         f.setNomeCompleto(dto.getNomeCompleto());
         f.setLogin(dto.getLogin());
-        f.setSenha(dto.getSenha());
         f.setPerfil(dto.getPerfil());
         f.setTelefone(dto.getTelefone());
         f.setEmail(dto.getEmail());
         f.setStatus(dto.getStatus());
         f.setEspecialidade(dto.getEspecialidade());
         f.setHorarioTrabalho(dto.getHorarioTrabalho());
+        f.setSenha(BCrypt.hashpw(dto.getSenha(), BCrypt.gensalt()));
 
         return FuncionarioResponseDTO.fromEntity(repository.save(f));
     }
@@ -81,10 +82,10 @@ public FuncionarioService(FuncionarioRepository repository,
         Funcionario f = getOrThrow(login);
 
         if (dto.getNovaSenha() != null && !dto.getNovaSenha().isBlank()) {
-            if (dto.getSenhaAtual() == null || !dto.getSenhaAtual().equals(f.getSenha())) {
+            if (dto.getSenhaAtual() == null || !BCrypt.checkpw(dto.getSenhaAtual(), f.getSenha())) {
                 throw new NegocioException("Senha atual incorreta.");
             }
-            f.setSenha(dto.getNovaSenha());
+            f.setSenha(BCrypt.hashpw(dto.getNovaSenha(), BCrypt.gensalt()));
         }
 
         if (dto.getNomeCompleto() != null && !dto.getNomeCompleto().isBlank()) f.setNomeCompleto(dto.getNomeCompleto());

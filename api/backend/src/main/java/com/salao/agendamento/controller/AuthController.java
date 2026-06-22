@@ -12,6 +12,7 @@ import com.salao.agendamento.repository.FuncionarioRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -28,7 +29,7 @@ public class AuthController {
     @PostMapping("/funcionario/login")
     public ResponseEntity<?> loginFuncionario(@RequestBody LoginRequestDTO request) {
         Funcionario funcionario = funcionarioRepository.findByLogin(request.getLogin())
-                .filter(f -> f.getSenha().equals(request.getSenha()) && f.getStatus() == Status.ATIVO)
+                .filter(f -> BCrypt.checkpw(request.getSenha(), f.getSenha()) && f.getStatus() == Status.ATIVO)
                 .orElse(null);
 
         if (funcionario == null) {
@@ -43,7 +44,7 @@ public class AuthController {
     @PostMapping("/cliente/login")
     public ResponseEntity<?> loginCliente(@RequestBody LoginRequestDTO request) {
         Cliente cliente = clienteRepository.findByLogin(request.getLogin())
-                .filter(c -> c.getSenha().equals(request.getSenha()) && c.getStatus() == Status.ATIVO)
+                .filter(c -> BCrypt.checkpw(request.getSenha(), c.getSenha()) && c.getStatus() == Status.ATIVO)
                 .orElse(null);
 
         if (cliente == null) {

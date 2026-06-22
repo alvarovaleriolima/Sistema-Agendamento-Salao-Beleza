@@ -142,7 +142,15 @@ export function ClientesPage({ toast }: { toast: (m: string, t?: 'success' | 'er
   const [modal, setModal] = useState(false);
   const [editItem, setEditItem] = useState<ClienteResponse | undefined>();
   const [confirmItem, setConfirmItem] = useState<ClienteResponse | undefined>();
+  const [confirmLgpdItem, setConfirmLgpdItem] = useState<ClienteResponse | undefined>();
   const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const [historicoModal, setHistoricoModal] = useState(false);
+  const [historicoItem, setHistoricoItem] = useState<ClienteResponse | undefined>();
+  const [historicoData, setHistoricoData] = useState<any[]>([]);
+  const [historicoLoading, setHistoricoLoading] = useState(false);
+  const [histInicio, setHistInicio] = useState('');
+  const [histFim, setHistFim] = useState('');
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -185,6 +193,42 @@ export function ClientesPage({ toast }: { toast: (m: string, t?: 'success' | 'er
     } catch (e: any) { toast(e.message, 'error'); }
     finally { setConfirmLoading(false); }
   };
+
+  const handleLgpd = async () => {
+    if (!confirmLgpdItem) return;
+    setConfirmLoading(true);
+    try {
+      await api.clientes.excluirLgpd(confirmLgpdItem.login);
+      toast(`Dados de ${confirmLgpdItem.nomeCompleto} anonimizados.`);
+      setConfirmLgpdItem(undefined); load();
+    } catch (e: any) { toast(e.message, 'error'); }
+    finally { setConfirmLoading(false); }
+  };
+
+  const handleOpenHistorico = async (item: ClienteResponse) => {
+    setHistoricoItem(item);
+    setHistoricoModal(true);
+    setHistoricoLoading(true);
+    setHistInicio('');
+    setHistFim('');
+    try {
+      const data = await api.clientes.historico(item.login);
+      setHistoricoData(data);
+    } catch (e: any) {
+      toast(e.message, 'error');
+    } finally {
+      setHistoricoLoading(false);
+    }
+  };
+
+  const filteredHistorico = historicoData.filter(h => {
+    if (!histInicio && !histFim) return true;
+    const [d, m, y] = h.data.split(' ')[0].split('/');
+    const dateStr = `${y}-${m}-${d}`;
+    if (histInicio && dateStr < histInicio) return false;
+    if (histFim && dateStr > histFim) return false;
+    return true;
+  });
 
   return (
     <>
@@ -247,6 +291,8 @@ export function ClientesPage({ toast }: { toast: (m: string, t?: 'success' | 'er
                         {item.status === 'ATIVO' && (
                           <button className="s-action-btn danger" onClick={() => setConfirmItem(item)} title="Inativar"><SIcon name="ban" size={13} /></button>
                         )}
+                        <button className="s-action-btn" onClick={() => handleOpenHistorico(item)} title="Ver Histórico"><SIcon name="calendar" size={13} /></button>
+                        <button className="s-action-btn danger" onClick={() => setConfirmLgpdItem(item)} title="Excluir (LGPD)"><SIcon name="trash-2" size={13} /></button>
                       </div>
                     </td>
                   </tr>
@@ -267,6 +313,52 @@ export function ClientesPage({ toast }: { toast: (m: string, t?: 'success' | 'er
       <SConfirm open={!!confirmItem} title="Inativar Cliente"
         message={`Tem certeza que deseja inativar "${confirmItem?.nomeCompleto}"? Agendamentos futuros serão cancelados.`}
         onConfirm={handleInativar} onCancel={() => setConfirmItem(undefined)} loading={confirmLoading} />
+
+      <SConfirm open={!!confirmLgpdItem} title="Exclusão de Dados (LGPD)"
+        message={`ATENÇÃO: Deseja apagar definitivamente os dados pessoais de "${confirmLgpdItem?.nomeCompleto}"? Esta ação é irreversível e anonimizará o cadastro, apagando telefone, e-mail e senha.`}
+        confirmLabel="Excluir Dados"
+        onConfirm={handleLgpd} onCancel={() => setConfirmLgpdItem(undefined)} loading={confirmLoading} />
+
+      <SModal open={historicoModal} onClose={() => setHistoricoModal(false)} title={`Histórico: ${historicoItem?.nomeCompleto}`} width={650}>
+        <div className="s-content" style={{ padding: 0 }}>
+          <div className="s-search-bar" style={{ padding: '16px', borderBottom: '1px solid var(--border)' }}>
+            <div className="s-field" style={{ margin: 0 }}>
+              <label className="s-label" style={{ fontSize: '11px' }}>A partir de</label>
+              <input type="date" className="s-input" value={histInicio} onChange={e => setHistInicio(e.target.value)} />
+            </div>
+            <div className="s-field" style={{ margin: 0 }}>
+              <label className="s-label" style={{ fontSize: '11px' }}>Até</label>
+              <input type="date" className="s-input" value={histFim} onChange={e => setHistFim(e.target.value)} />
+            </div>
+          </div>
+          {historicoLoading ? (
+            <div className="s-spinner-wrap" style={{ minHeight: 200 }}><div className="s-spinner" /></div>
+          ) : filteredHistorico.length === 0 ? (
+            <div className="s-empty" style={{ minHeight: 200 }}>
+              <p>Nenhum atendimento pago/concluído encontrado neste período.</p>
+            </div>
+          ) : (
+            <div className="s-table-wrap" style={{ border: 0, borderRadius: 0 }}>
+              <table style={{ margin: 0 }}>
+                <thead><tr><th>Data</th><th>Serviço</th><th>Profissional</th><th>Valor Pago</th></tr></thead>
+                <tbody>
+                  {filteredHistorico.map((h, i) => (
+                    <tr key={i}>
+                      <td style={{ color: 'var(--ink-soft)' }}>{h.data}</td>
+                      <td>{h.servico}</td>
+                      <td>{h.profissional}</td>
+                      <td>R$ {h.valor.toFixed(2).replace('.', ',')}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="s-table-footer">
+                Total do Período: R$ {filteredHistorico.reduce((acc, h) => acc + h.valor, 0).toFixed(2).replace('.', ',')}
+              </div>
+            </div>
+          )}
+        </div>
+      </SModal>
     </>
   );
 }

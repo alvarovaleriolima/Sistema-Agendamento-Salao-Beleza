@@ -19,7 +19,7 @@ public class DatabaseSeeder {
                 Funcionario admin = new Funcionario();
                 admin.setNomeCompleto("Administrador do Sistema");
                 admin.setLogin("admin");
-                admin.setSenha("admin123");
+                admin.setSenha(org.mindrot.jbcrypt.BCrypt.hashpw("admin123", org.mindrot.jbcrypt.BCrypt.gensalt()));
                 admin.setPerfil(PerfilFuncionario.ADMINISTRADOR);
                 admin.setStatus(Status.ATIVO);
                 admin.setTelefone("(00) 00000-0000");
