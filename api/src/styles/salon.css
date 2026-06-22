@@ -461,7 +461,8 @@ body {
   position: fixed; inset: 0;
   background: rgba(26,23,20,0.55);
   backdrop-filter: blur(2px);
-  display: flex; align-items: center; justify-content: center;
+  display: flex; align-items: flex-start; justify-content: center;
+  overflow-y: auto;
   z-index: 100;
   padding: 20px;
   animation: s-fadeIn 0.15s ease;
@@ -474,8 +475,7 @@ body {
   border-radius: 8px;
   width: 100%;
   max-width: 560px;
-  max-height: 92vh;
-  overflow-y: auto;
+  margin: auto;
   box-shadow: var(--shadow-lg);
   animation: s-slideUp 0.2s ease;
 }
@@ -701,8 +701,9 @@ body {
   height: 100vh;
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  overflow-y: auto;
   background: var(--cream);
   padding: 20px;
 }
@@ -715,6 +716,7 @@ body {
   border-radius: 8px;
   box-shadow: var(--shadow-lg);
   padding: 36px 32px 32px;
+  margin: auto;
 }
 
 .s-login-logo {
@@ -799,4 +801,98 @@ body {
 .s-info-row strong {
   display: block; color: var(--ink);
   font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
+}
+
+/* ── Responsividade (Telas Menores) ──────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Layout Principal */
+  .s-app {
+    flex-direction: column;
+  }
+
+  /* Sidebar vira navegação horizontal no topo */
+  .s-sidebar {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .s-sidebar-logo {
+    padding: 0 12px 0 0;
+    border-bottom: none;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .s-sidebar-logo-icon {
+    margin-bottom: 0;
+    width: 28px; height: 28px;
+    font-size: 14px;
+  }
+
+  .s-sidebar-logo h1 { font-size: 18px; }
+
+  .s-sidebar-section {
+    padding: 0;
+    display: flex;
+    gap: 8px;
+    flex: 1;
+    overflow-x: auto;
+  }
+
+  .s-sidebar-section-label { display: none; }
+
+  .s-sidebar-item {
+    width: auto;
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+
+  .s-sidebar-item.active::before {
+    left: 8px; top: unset; bottom: 0;
+    width: calc(100% - 16px); height: 2px;
+    border-radius: 2px 2px 0 0;
+  }
+
+  .s-sidebar-footer {
+    padding: 0;
+    border-top: none;
+    margin-top: 0;
+    margin-left: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .s-sidebar-user { margin-bottom: 0; flex-direction: row; gap: 8px; align-items: center; display: none; }
+  .s-sidebar-logout { width: auto; padding: 6px 10px; }
+
+  /* Conteúdo e Cabeçalho */
+  .s-content { padding: 16px; }
+  .s-header { padding: 16px; }
+  .s-header-top { flex-direction: column; gap: 12px; }
+  .s-header-top .s-actions { width: 100%; justify-content: stretch; }
+  .s-header-top .s-actions button { flex: 1; justify-content: center; }
+
+  /* Formulários e Grids */
+  .s-form-grid, .s-prof-section, .s-pwd-section {
+    grid-template-columns: 1fr;
+  }
+
+  /* Tabelas */
+  .s-table-wrap { overflow-x: auto; }
+
+  /* Modal */
+  .s-modal { max-width: 100%; }
+
+  /* Login */
+  .s-login-card { padding: 24px 20px; }
 }
