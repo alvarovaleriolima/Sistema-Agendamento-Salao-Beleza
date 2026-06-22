@@ -13,9 +13,10 @@ Sistema-Agendamento-Salao-Beleza
 │   ├── Tabela_Estimativa_Projeto.xlsx
 │   ├── CronogramaSalao.pod
 │   └── Baseline_Analise_v1.0.md
-├── BackEnd
-│   └── salon-api
-└── FrontEnd
+├── api
+│   ├── backend (Spring Boot Backend)
+│   └── src (React/Vite Frontend)
+├── Testes-Selenium
 ```
 
 ### Documentação
@@ -69,27 +70,19 @@ O projeto utiliza Git e GitHub para controle de versão e gerenciamento de confi
 
 ```text
 Sistema-Agendamento-Salao-Beleza
-├── BackEnd
-│   └── salon-api
-│       ├── src/main/java/com/salao/salon_api
-│       │   ├── controller
-│       │   ├── services
-│       │   ├── models
-│       │   ├── repositories
-│       │   ├── dto
-│       │   │   ├── funcionario
-│       │   │   └── cliente
-│       │   ├── enums
-│       │   └── exceptions
-│       └── src/main/resources
-│           └── application.properties
-└── FrontEnd
-    ├── src
-    │   ├── app
-    │   ├── components
-    │   ├── services
-    │   └── styles
-    └── package.json
+├── api
+│   ├── backend
+│   │   ├── src/main/java/com/salao/agendamento
+│   │   └── src/main/resources
+│   │       └── application.properties
+│   ├── src
+│   │   ├── app
+│   │   ├── components
+│   │   ├── services
+│   │   └── styles
+│   └── package.json
+├── Testes-Selenium
+│   └── test_login.py
 ```
 
 ---
@@ -115,27 +108,18 @@ npm install -g pnpm
 ### 1. Clonar o Repositório
 
 ```bash
-git clone https://github.com/seu-usuario/Sistema-Agendamento-Salao-Beleza.git
+git clone https://github.com/alvarovaleriolima/Sistema-Agendamento-Salao-Beleza.git
 
 cd Sistema-Agendamento-Salao-Beleza
 ```
 
 ### 2. Executar o Backend
 
-```bash
-cd BackEnd/salon-api
-```
-
-Linux/Mac:
+Requer o Maven instalado em sua máquina.
 
 ```bash
-./mvnw spring-boot:run
-```
-
-Windows:
-
-```bash
-mvnw.cmd spring-boot:run
+cd api/backend
+mvn spring-boot:run
 ```
 
 O backend será iniciado em:
@@ -146,18 +130,12 @@ http://localhost:8080
 
 ### 3. Executar o Frontend
 
-Em outro terminal:
+Em outro terminal, utilize o npm (Node.js) para rodar o projeto React com Vite:
 
 ```bash
-cd FrontEnd
-
-pnpm install
-
-pnpm approve-builds
-
-pnpm install
-
-pnpm dev
+cd api
+npm install
+npm run dev
 ```
 
 O frontend será iniciado em:
@@ -165,6 +143,12 @@ O frontend será iniciado em:
 ```text
 http://localhost:5173
 ```
+
+### 4. Acesso ao Sistema
+
+Após a inicialização, você poderá acessar o frontend pelo navegador. O sistema já conta com um usuário Administrador padrão criado automaticamente:
+- **Login:** `admin`
+- **Senha:** `admin123`
 
 ---
 
@@ -187,9 +171,9 @@ http://localhost:8080/h2-console
 Configurações:
 
 ```text
-JDBC URL: jdbc:h2:mem:sasb_db
+JDBC URL: jdbc:h2:mem:testdb
 Usuário: sa
-Senha: (em branco)
+Senha: password
 ```
 
 ---
